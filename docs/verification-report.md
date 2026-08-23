@@ -1,23 +1,23 @@
 # Verification report
 
-Generated: 2026-08-23T17:40:14.690Z
+Generated: 2026-08-23T17:53:48.467Z
 Command: `npm run verify`
 Node: v24.19.0 · Platform: win32
 
 | Step | Result | Ran | Duration |
 |---|---|---|---:|
-| ESLint | PASS | — | 2.6s |
-| TypeScript | PASS | — | 2.1s |
-| Distributed data hashes and exclusions | PASS | — | 0.3s |
+| ESLint | PASS | — | 4.6s |
+| TypeScript | PASS | — | 2.9s |
+| Distributed data hashes and exclusions | PASS | — | 0.4s |
 | Vitest (unit + integration) | PASS | 378 tests in 22 files | 18.0s |
-| Thermal snapshot store | PASS | — | 0.6s |
-| Next production build | PASS | — | 7.0s |
+| Thermal snapshot store | PASS | — | 0.5s |
+| Next production build | PASS | — | 6.9s |
 | Generated runtime assets (MapLibre worker) | PASS | — | 0.1s |
 | GTFS archive and derived hashes | PASS | — | 0.4s |
-| GTFS rebuild reproduces the canonical hash | PASS | — | 3.6s |
+| GTFS rebuild reproduces the canonical hash | PASS | — | 3.3s |
 | Secret scan | PASS | — | 0.1s |
-| Dependency audit (high severity) | PASS | — | 1.0s |
-| Playwright end-to-end | PASS | 32 tests | 59.2s |
+| Dependency audit (high severity) | PASS | — | 0.8s |
+| Playwright end-to-end | PASS | 32 tests | 50.7s |
 
 **Overall: PASS**
 

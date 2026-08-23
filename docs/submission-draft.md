@@ -4,9 +4,9 @@ FortyGuard Hackathon ’26 · Resilient Cities & Infrastructure · Agentic AI ·
 Data Analysis & Correlation
 
 > **Draft. Not submitted.** No submission form has been filed. The official
-> collaborator `Hackathon-FG` (`hackathon@fortyguard.com`) must still be added to
-> the final clean repository, and the final demo video is uploaded non-listed at
-> <https://youtu.be/GW-F8puuu5I>.
+> collaborator `Hackathon-FG` (`hackathon@fortyguard.com`) was invited with read
+> permission on 2026-08-23; GitHub reports the invitation as pending acceptance.
+> The final demo video is uploaded non-listed at <https://youtu.be/GW-F8puuu5I>.
 > Status per requirement:
 > [`hackathon-compliance.md` §6](hackathon-compliance.md). Actions still to take:
 > [`submission-checklist.md`](submission-checklist.md).
@@ -200,7 +200,7 @@ must be supplied only at submission time and must never be committed.
 | FortyGuard API key | `[enter directly in the form; never paste into this file, the repository or browser-visible app code]` |
 | AI tools | OpenAI Codex/ChatGPT supported repository inspection, implementation, test design, adversarial review and documentation under human direction and review. ElevenLabs generated the final English narration from the owner's authorised voice clone. All product calculations are deterministic code covered by tests; AI does not invent or alter the reported heat, ridership or ranking values. |
 | Repository | https://github.com/Damso74/fortyguard-heat-priority-engine |
-| Collaborator confirmation | `[after the clean repository exists: invite Hackathon-FG with read permission and verify acceptance]` |
+| Collaborator confirmation | `Hackathon-FG invited with read permission on 2026-08-23; invitation pending acceptance` |
 | Live demo | https://heat-priority-engine.vercel.app |
 | Demo video | https://youtu.be/GW-F8puuu5I |
 | Optional note | The real pilot deliberately enters `EXPOSURE_ONLY` mode because its local anomaly fails held-out-hour persistence. Rather than manufacture a hotspot, the engine ranks estimated exposure alone and keeps unsupported claims blocked in the audit export. |

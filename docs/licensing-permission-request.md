@@ -107,6 +107,9 @@ Thank you.
 - commercial/non-commercial restriction, duration and revocation terms;
 - date reviewed and the repository commit that implements the decision.
 
-Until both unresolved sources are answered, the submission gate remains
-`NO-GO`. A reply that permits viewing or analysis but not redistribution does not
-clear it.
+The public-repository submission gate no longer depends on these replies: the
+unresolved raw payloads and their inherited Git objects were excluded by the
+clean replacement repository. Replies remain relevant to any future publication
+of those raw payloads or broader claims about processed per-stop fields. A reply
+that permits viewing or analysis but not redistribution does not grant
+redistribution rights.

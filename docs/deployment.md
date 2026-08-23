@@ -105,9 +105,9 @@ After review, a newly captured immutable snapshot can be committed and deployed.
 
 ## Repository publication
 
-The official form names **`Hackathon-FG`** (`hackathon@fortyguard.com`). Add it
-with read permission only after the public-repository licensing blocker recorded
-in `data-provenance.md` §8 has been resolved
+The official form names **`Hackathon-FG`** (`hackathon@fortyguard.com`). It was
+invited with read permission on 2026-08-23 after the public-repository licensing
+blocker recorded in `data-provenance.md` §8 was resolved
 ([`data-provenance.md` §8](data-provenance.md); ordering in
 [`submission-checklist.md`](submission-checklist.md)):
 
@@ -117,7 +117,7 @@ gh api -X PUT repos/Damso74/fortyguard-heat-priority-engine/collaborators/Hackat
   -f permission=pull
 ```
 
-**Before the final push**, confirm:
+**Before every final push**, confirm:
 
 ```bash
 npm run scan:secrets        # must report clean

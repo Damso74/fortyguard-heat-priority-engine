@@ -1,8 +1,8 @@
 # Demo script — 3 minutes
 
 > **Status: final local candidate recorded and technically reviewed 2026-08-23;
-> uploaded non-listed on the owner's instruction; the clean public repository is
-> the remaining publication prerequisite before form submission.**
+> uploaded non-listed on the owner's instruction; the clean public repository and
+> production deployment are published. Only owner review and form submission remain.**
 > `outputs/submission-video/fortyguard-demo-jury-final.mp4` is an ignored local
 > artefact: H.264/AAC, 1440×810 (16:9), 2:32.88, with the owner's ElevenLabs
 > voice clone, guided cursor and embedded English subtitles. Audio measures

@@ -289,7 +289,7 @@ on the strength of a plan.
 |---|---|
 | Public GitHub repository | **Done** — <https://github.com/Damso74/fortyguard-heat-priority-engine>. Recorded as public; re-confirm the remote and its visibility before submitting. |
 | Live website / demo link | **Done and re-verified 2026-08-23** — <https://heat-priority-engine.vercel.app>. Production serves the pilot and Reports shows `Submission licensing: Ready`. Re-confirm on submission day. |
-| Add the FortyGuard collaborator account | **Not done on the current repository as of 2026-08-23.** The collaborators API lists only `Damso74`; there is no pending invitation. After the final clean repository exists, invite `Hackathon-FG` (`hackathon@fortyguard.com`) with `read` permission and verify acceptance. |
+| Add the FortyGuard collaborator account | **Invitation created 2026-08-23; acceptance pending.** GitHub accepted a `read` invitation for `Hackathon-FG` (`hackathon@fortyguard.com`) on the clean public repository. Acceptance depends on that account; the repository is already publicly readable. |
 | Submitted before 30 Aug 2026 GST | **Not done.** The form is distributed via Slack. Deadline 30 August 2026, 23:59 GST = 19:59 UTC = 12:59 America/Phoenix. |
 | FortyGuard data central to the project | **Yes, demonstrated with real data.** The default pilot serves 450 cells from three completed activities across 27 Downtown stops; its thermal gate selects `EXPOSURE_ONLY`. See §7. |
 | US geography | Yes — Phoenix, Arizona |
@@ -297,7 +297,7 @@ on the strength of a plan.
 | **3-minute demo video** | **Uploaded non-listed on the owner's instruction 2026-08-23:** <https://youtu.be/GW-F8puuu5I>. YouTube serves 2:32 with active English captions and reports no copyright issue. The ignored local MP4 remains 2:32.88 at 1440×810 with the owner's ElevenLabs voice clone, guided cursor, embedded English subtitles, normalized audio and the resolved licensing state. See [`demo-script.md`](demo-script.md). |
 | README + brief summary | README written; the brief summary is [`submission-draft.md`](submission-draft.md), also not yet submitted anywhere. |
 | **Raw-source redistribution rights** | **Resolved by clean replacement repository.** The original repository, whose PR ref retained the removed files, is private. This public repository starts at a verified clean root and contains neither raw extract nor the unneeded OpenAPI download. Pending permission requests also cover processed per-stop fields (§5, `data-provenance.md` §8). |
-| Form declaration: repository created after kickoff | **Owner decision recorded 2026-08-23: rely on the retained written pre-sprint authorisation and request no further clarification.** GitHub records repository creation on 2026-08-04; the official onboarding/kickoff was 2026-08-18. These facts remain disclosed. The required checkbox is a personal attestation for the owner at submission time, not something this repository or an agent certifies. |
+| Form declaration: repository created after kickoff | **Supported by current repository metadata.** GitHub records the clean public submission repository creation on 2026-08-23, after the 2026-08-18 onboarding/kickoff. The retained 2026-08-03 organiser email separately permits pre-sprint building. The checkbox remains a personal attestation for the owner. |
 
 ### What may be claimed at submission, and what may not
 
