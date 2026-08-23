@@ -1,0 +1,18 @@
+# Normalise text to LF in the repository and on checkout, on every platform.
+* text=auto eol=lf
+
+# Hash-verified artefacts must never be touched by newline translation.
+# `npm run data:check` compares the bytes on disk against the SHA-256 recorded
+# in the manifests; a CRLF conversion on checkout would fail every one of them
+# on Windows. `-text` disables conversion entirely for these paths.
+*.geojson            -text
+data/generated/**    -text
+data/manifests/**    -text
+outputs/*.json       -text
+outputs/*.csv        -text
+
+# Binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary

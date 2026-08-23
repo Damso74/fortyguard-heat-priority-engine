@@ -1,0 +1,12 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Heat Priority Engine favicon. White plate so the mark survives dark
+       browser chrome; geometry mirrors components/Brand.tsx exactly. -->
+  <rect x="0" y="0" width="32" height="32" rx="6" fill="#ffffff"/>
+  <rect x="6" y="6" width="4" height="15" rx="1.2" fill="#dd6b2c"/>
+  <rect x="13" y="11" width="4" height="10" rx="1.2" fill="#17627f"/>
+  <path d="M3 25.5h26" stroke="#10151c" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="8" cy="25.5" r="1.7" fill="#ffffff" stroke="#10151c" stroke-width="1.1"/>
+  <circle cx="15" cy="25.5" r="1.7" fill="#ffffff" stroke="#10151c" stroke-width="1.1"/>
+  <circle cx="24.5" cy="25.5" r="4.6" fill="none" stroke="#dd6b2c" stroke-width="1.3"/>
+  <circle cx="24.5" cy="25.5" r="2.4" fill="#10151c"/>
+</svg>

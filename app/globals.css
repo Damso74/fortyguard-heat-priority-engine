@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Heat Priority Engine design tokens.
+   Light mode only, by product decision: this is municipal analysis software
+   meant to be read in an office and printed into a planning pack.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-ink-900: #0b1828;
+  --color-ink-700: #334155;
+  --color-ink-500: #526173;
+  --color-ink-400: #768396;
+  --color-ink-300: #a8b3c2;
+  --color-ink-200: #d7dee8;
+  --color-ink-100: #e9eef4;
+  --color-ink-50: #f7f9fc;
+
+  --color-brand-700: #0f4f9f;
+  --color-brand-600: #1769e0;
+  --color-brand-500: #2e7ce6;
+  --color-brand-100: #dceafd;
+  --color-brand-50: #eff6ff;
+
+  --color-heat-700: #9d3515;
+  --color-heat-600: #c74920;
+  --color-heat-500: #e85d2a;
+  --color-heat-200: #f6d3bd;
+  --color-heat-100: #fbe8dc;
+
+  --color-flag-700: #8a5b00;
+  --color-flag-100: #fdf0d2;
+
+  --color-ok-700: #087f73;
+  --color-ok-100: #d9f2ed;
+
+  --color-stop-700: #8e1f30;
+  --color-stop-100: #fadfe3;
+
+  /* System UI stack only. An earlier version named Inter first and never loaded
+     it, so every surface silently fell back anyway — see docs/bug-registry.md #2. */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-ink-50 text-ink-900 font-sans antialiased;
+    font-feature-settings: 'tnum' 1, 'cv05' 1;
+  }
+
+  /* Never rely on colour alone, and never remove the focus ring. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  th {
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  .hpe-card {
+    @apply rounded-lg border border-ink-200 bg-white;
+  }
+
+  .hpe-label {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-ink-500;
+  }
+
+  .hpe-num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Skip link: visible only once focused. */
+.hpe-skip-link {
+  @apply sr-only;
+}
+.hpe-skip-link:focus {
+  @apply not-sr-only fixed left-3 top-3 z-50 rounded-md bg-brand-600 px-4 py-2 text-sm
+    font-semibold text-white shadow-lg;
+}
+
+/* MapLibre ships its own CSS; these keep its controls inside our visual system. */
+.maplibregl-ctrl-attrib {
+  font-size: 10px;
+}
+
+@media print {
+  .hpe-no-print {
+    display: none !important;
+  }
+
+  .hpe-print-only {
+    display: block !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .hpe-card {
+    border-color: #999;
+    break-inside: avoid;
+  }
+
+  a[href]::after {
+    content: '';
+  }
+}
+
+.hpe-print-only {
+  display: none;
+}

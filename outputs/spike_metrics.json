@@ -1,0 +1,52 @@
+{
+  "sources": {
+    "phoenix_city_bus_stops": 4104,
+    "valley_metro_phoenix_stops": 4289,
+    "valley_metro_active_phoenix_stops": 4288,
+    "historical_valley_metro_phoenix_stops": 4758
+  },
+  "join": {
+    "direct_stop_id_matches": 4072,
+    "stop_code_only_matches": 0,
+    "unmatched_valley_stops": 216,
+    "matched_total": 4072,
+    "match_rate_pct": 94.96,
+    "city_records_matched": 4072,
+    "city_records_unmatched": 32,
+    "city_coverage_pct": 99.22,
+    "coordinate_delta_median_m": 0.04,
+    "coordinate_delta_p95_m": 0.06
+  },
+  "ridership": {
+    "joined_non_null": 4004,
+    "joined_completeness_pct": 93.38,
+    "min": 0,
+    "median": 9.0,
+    "p90": 65.0,
+    "p99": 172.9699999999998,
+    "max": 609,
+    "unit_or_period_documented": false
+  },
+  "shelter_inventory": {
+    "city_non_null": 20,
+    "city_positive": 20,
+    "valley_positive_integer": 0,
+    "valley_string_one": 1,
+    "official_sheltered_stop_total_fy2025": 3164,
+    "usable_for_unshaded_classification": false,
+    "reason": "Published amenity fields contradict Phoenix's official sheltered-stop total."
+  },
+  "candidate_panel": {
+    "count": 10,
+    "minimum_pairwise_distance_km": 1.665,
+    "bbox": {
+      "min_lon": -112.129111,
+      "min_lat": 33.406549,
+      "max_lon": -112.03005,
+      "max_lat": 33.494966
+    },
+    "approx_bbox_area_sq_km": 90.36,
+    "approx_bbox_area_sq_mi": 34.89,
+    "shelter_ground_truth_available": false
+  }
+}

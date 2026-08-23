@@ -1,0 +1,82 @@
+{
+  "kind": "heat-priority-engine/thermal-snapshot",
+  "version": 2,
+  "request": {
+    "aoiId": "central-phoenix",
+    "analysisDate": "2026-08-03",
+    "snapshotTimes": [
+      "11:00",
+      "14:00"
+    ],
+    "analyticType": "tcm",
+    "granularityMeters": 60,
+    "filterType": 1,
+    "timezone": "America/Phoenix"
+  },
+  "source": {
+    "dataMode": "DEMO_SYNTHETIC",
+    "provenance": "SYNTHETIC",
+    "activityIds": [],
+    "valueField": "tcm",
+    "unit": null,
+    "unitConfirmed": false,
+    "timezoneStrategy": "send_local_wallclock_unconverted",
+    "capabilityProbeRunId": "probe-1",
+    "capturedAtUtc": "2026-08-03T20:00:00.000Z",
+    "notes": []
+  },
+  "surfaceSha256": "1f983f094527f9e4daf4597eb46456b951dca02e13f5c739862c17fbc4f2db6e",
+  "attestationSha256": "b77a56950b35d0f4e0a430f1c44570f024ced992cfec7f1b7ff7fa0e0b6a347b",
+  "cells": [
+    {
+      "id": "c1",
+      "centroidLon": -112.07,
+      "centroidLat": 33.45,
+      "ring": [
+        [
+          -112.071,
+          33.449
+        ],
+        [
+          -112.069,
+          33.449
+        ],
+        [
+          -112.069,
+          33.451
+        ],
+        [
+          -112.071,
+          33.451
+        ]
+      ],
+      "value": 41.5,
+      "snapshot": "2026-08-03T11:00"
+    },
+    {
+      "id": "c2",
+      "centroidLon": -112.06,
+      "centroidLat": 33.46,
+      "ring": [
+        [
+          -112.061,
+          33.459
+        ],
+        [
+          -112.059,
+          33.459
+        ],
+        [
+          -112.059,
+          33.461
+        ],
+        [
+          -112.061,
+          33.461
+        ]
+      ],
+      "value": 43.25,
+      "snapshot": "2026-08-03T14:00"
+    }
+  ]
+}

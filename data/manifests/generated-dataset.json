@@ -1,0 +1,28 @@
+{
+  "generatedAtUtc": "2026-08-04T18:46:47.109277+00:00",
+  "artifact": {
+    "path": "data/generated/phoenix_transit_stops.json",
+    "sha256": "74cf1b8a54705edaf66c0527e9d7ecd97c26d8595552d0044b5804267baeeed3",
+    "canonicalSha256": "8552e888279b7cc3ea874c64e2b87dad363618a598e3ede4567bddbb9dccf67a",
+    "bytes": 6335599,
+    "records": 4288
+  },
+  "derivedFrom": [
+    {
+      "path": "data/raw/valley_metro_phoenix_stops.geojson",
+      "sha256": "05ee48522e85e352ff9eeca57222177c29487f357339d41ecb7e4f9020ee200d"
+    },
+    {
+      "path": "data/raw/valley_metro_quarterly_ridership.json",
+      "sha256": "8776300dd4ae5f2f7bbd02cd92713d12c69944cc8c8a54d07101fb1baddd18eb"
+    },
+    {
+      "path": "data/generated/stop_service_frequency.json",
+      "canonicalSha256": "f0c04a3f1523fae844a39a5e15eb72fbfaeee134b0b69277a994876b6347b984"
+    },
+    {
+      "path": "data/raw/phoenix_bus_stops.geojson",
+      "sha256": "00bce32aa1ce6c677fefb73a96dcf72173047c9dc4779874d21344b8dd7130e7"
+    }
+  ]
+}

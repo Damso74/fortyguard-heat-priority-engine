@@ -1,0 +1,34 @@
+{
+  "kind": "heat-priority-engine/thermal-snapshot",
+  "version": 2,
+  "request": {
+    "aoiId": "central-phoenix",
+    "analysisDate": "2026-08-03",
+    "snapshotTimes": [
+      "11:00",
+      "14:00"
+    ],
+    "analyticType": "tcm",
+    "granularityMeters": 60,
+    "filterType": 1,
+    "timezone": "America/Phoenix"
+  },
+  "source": {
+    "dataMode": "LIVE_FORTYGUARD",
+    "provenance": "REAL",
+    "activityIds": [
+      "act-1",
+      "act-2"
+    ],
+    "valueField": "tcm",
+    "unit": "°C",
+    "unitConfirmed": true,
+    "timezoneStrategy": "send_local_wallclock_unconverted",
+    "capabilityProbeRunId": "probe-1",
+    "capturedAtUtc": "2026-08-03T20:00:00.000Z",
+    "notes": []
+  },
+  "surfaceSha256": "1f983f094527f9e4daf4597eb46456b951dca02e13f5c739862c17fbc4f2db6e",
+  "attestationSha256": "cb70c3ff14e7f60c0fd1251fed9d3b5a5fa3b9627d7520bfd25ba4bf90b1a83c",
+  "cells": []
+}

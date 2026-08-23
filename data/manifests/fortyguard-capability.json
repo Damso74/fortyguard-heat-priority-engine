@@ -1,0 +1,36 @@
+{
+  "_comment": "Hand-edited after a human reads probe output, then reviewed before commit. Parsed by a strict schema in lib/fortyguard/capability.ts: unknown keys are rejected, a malformed file throws rather than degrading silently, a confirmed unit must be literally the two characters degree-sign C, and timezone.applied may only be true once the client acts on the confirmed strategy. Every false below blocks a claim. The four identity fields (capabilityVersion, endpoint) are folded into a fingerprint that every real snapshot is bound to, so a snapshot captured under one set of answers cannot be served after those answers change.",
+  "capabilityVersion": 3,
+  "probeRunId": "phoenix-three-hour-pilot-2026-08-18",
+  "probedAtUtc": "2026-08-18T12:50:49.885Z",
+  "probeToolVersion": "scripts/fortyguard/import-phoenix-pilot.mjs@1.1.0",
+  "endpoint": {
+    "host": "api.fortyguard.com",
+    "submitPath": "/v1/heatmap",
+    "statusPath": "/v1/status/{activity_id}",
+    "analyticType": "tcm",
+    "openApiSha256": "94a80736b6cfd3a6fb0256f57f0d6c1c0013208aae6ad25eaaf41c5e61e7f301"
+  },
+  "valueField": {
+    "confirmed": true,
+    "name": "average_temperature",
+    "evidence": "Three completed Phoenix tcm responses returned 150 GeoJSON tiles each. Every tile carried numeric average_temperature, min_temperature and max_temperature fields; average_temperature is the canonical per-tile value imported by this product."
+  },
+  "unit": {
+    "confirmed": true,
+    "unit": "°C",
+    "evidence": "FortyGuard's Create Heatmap documentation states that tcm is a temperature snapshot whose value is temperature in degrees Celsius per tile. The observed response field is average_temperature. Documentation checked 2026-08-19: https://docs-api.fortyguard.com/docs/create-heatmap"
+  },
+  "semantics": {
+    "confirmed": true,
+    "meaning": "FortyGuard tcm modeled temperature snapshot, averaged per returned GeoJSON tile",
+    "evidence": "FortyGuard documents heatmap output as predicted or observed temperature data from its Large Temperature Models and tcm as temperature per tile. This confirms temperature semantics, but not that the values are in-situ measurements."
+  },
+  "timezone": {
+    "confirmed": true,
+    "strategy": "send_local_wallclock_unconverted",
+    "interpretedAs": "AOI-local wall clock, empirically validated for the Phoenix pilot; not stated in the response contract",
+    "applied": true,
+    "evidence": "The endpoint does not state the timezone contract. A three-hour Phoenix probe against an America/Phoenix baseline produced MAE 1.1103 °C and RMSE 1.7226 °C, versus UTC MAE 3.8354 °C and RMSE 5.6527 °C (3.28× worse). This product treats AOI-local interpretation as empirically confirmed for this Phoenix pilot, not vendor-contract confirmed. The importer verifies and records the unchanged wall-clock values that were actually transmitted."
+  }
+}

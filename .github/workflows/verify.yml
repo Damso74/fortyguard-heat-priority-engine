@@ -1,0 +1,128 @@
+name: verify
+
+# Everything this project claims, checked on a clean clone.
+#
+# The point is not "the tests pass on the author's laptop". It is that a fresh
+# checkout with no cached state verifies every distributed artefact, reproduces
+# the GTFS-derived data from its licensed archive, builds, and passes every suite.
+#
+# No secrets are used and none are needed: there is no FortyGuard key in CI.
+# Auto mode may load a committed, integrity-checked snapshot but cannot spend a
+# credit; the labelled fixture remains available to the two-axis test journeys.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Explicit rather than inherited: a run that silently acquired a key and an
+  # opt-in would be a run that could spend money.
+  RUN_LIVE_FORTYGUARD: '0'
+  DATA_MODE: auto
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # `npm ci` and not `npm install`: the lockfile is the contract, and a
+      # resolution that drifts in CI has already invalidated the build.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Distributed data hashes and exclusions
+        run: npm run data:check-distributed
+
+      - name: GTFS archive and derived hashes
+        run: python scripts/fetch/fetch_gtfs.py --check
+
+      # The joined dataset's two unresolved raw inputs are deliberately absent.
+      # Its committed digest is checked above. GTFS remains fully reproducible.
+      - name: GTFS rebuild reproduces
+        run: npm run data:rebuild-distributed
+
+      - name: Working tree is unchanged by the rebuild
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "The rebuild left the working tree dirty:"
+            git status --porcelain
+            git diff --stat
+            exit 1
+          fi
+
+      # Every file in the production snapshot store must be a valid real capture
+      # under the CURRENT capability manifest. A fabricated one was committed
+      # once — LIVE_FORTYGUARD, REAL, activity ids `act-1` and `act-2`, a
+      # confirmed °C unit and zero cells — and nothing went red.
+      - name: Thermal snapshot store is valid
+        run: npm run check:snapshots
+
+      - name: Request planner is network-free and produces a plan
+        run: python scripts/fortyguard/run_fortyguard_probe.py --date 2026-08-03
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Types
+        run: npm run typecheck
+
+      - name: Unit and integration tests
+        run: npm test
+
+      # `npm run build`, never `next build`: the worker is copied out of
+      # node_modules at prebuild and asserted at postbuild. A build command that
+      # skips those produces a map that renders tiles and carries no data.
+      - name: Production build
+        run: npm run build
+
+      - name: MapLibre worker present in the built tree
+        run: |
+          ls -l public/maplibre-gl-worker.mjs public/maplibre-gl-shared.mjs
+          node scripts/check-build-assets.mjs
+
+      - name: Secret scan
+        run: node scripts/scan-secrets.mjs
+
+      # Fails the build on a high or critical advisory. Moderate and below are
+      # reported without blocking, so the signal stays meaningful.
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

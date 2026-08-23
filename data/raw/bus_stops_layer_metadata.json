@@ -1,0 +1,46 @@
+{
+  "key": "phoenix_bus_stops",
+  "title": "City of Phoenix — Bus Stops",
+  "producer": "City of Phoenix (Public GIS)",
+  "layer_url": "https://maps.phoenix.gov/pub/rest/services/Public/BusStops/MapServer/0",
+  "query_where": "1=1",
+  "downloaded_at_utc": "2026-08-04T16:41:20.682898+00:00",
+  "service_last_edit_utc": null,
+  "service_description": "Active City of Phoenix bus stop locations.",
+  "record_count": 4104,
+  "service_reported_count": 4104,
+  "max_record_count": 12000,
+  "requested_projection": "EPSG:4326",
+  "native_projection_wkid": 4326,
+  "geometry_type": "esriGeometryPoint",
+  "service_time_reference": "US Mountain Standard Time",
+  "service_copyright_text": "Aarti Dua",
+  "available_fields": [
+    "OBJECTID",
+    "STOP_ID",
+    "LOCATION",
+    "NBR_TRASHCANS",
+    "NBR_BENCHES",
+    "NBR_SHELTERS",
+    "SHAPE",
+    "RIDERSHIP",
+    "NEXTRIDEID"
+  ],
+  "fields_used_by_this_project": [
+    "STOP_ID",
+    "NEXTRIDEID",
+    "RIDERSHIP",
+    "NBR_SHELTERS"
+  ],
+  "known_limitations": [
+    "No lastEditDate is published by the service, so freshness cannot be proven.",
+    "RIDERSHIP has no documented unit, period, or collection date.",
+    "NBR_SHELTERS is populated on 20 of 4104 records and contradicts the City's own published sheltered-stop total; it must not be read as an inventory."
+  ],
+  "terms_of_use": "City of Phoenix public open data endpoint; no auth required. No machine-readable licence is published on the layer.",
+  "artifact": {
+    "path": "data/raw/phoenix_bus_stops.geojson",
+    "sha256": "00bce32aa1ce6c677fefb73a96dcf72173047c9dc4779874d21344b8dd7130e7",
+    "bytes": 1655996
+  }
+}

@@ -1,0 +1,11 @@
+stop_id,stop_code,name,description,latitude,longitude,routes,ridership,match_method,city_nbr_shelters_raw,valley_shelters_raw,valley_shelter_raw,valley_shade_raw,historical_photo_url,shelter_status
+6230,19016,Van Buren St & Greg Stanton CS,WB Van Buren St & AT Greg Stanton CS (Bay 1),33.4515270000001,-112.074293,3,609,stop_id,,,,,,unknown
+6748,12799,Indian School Rd & Central Av,WB Indian School Rd & FS Central Av,33.494966,-112.074829,41,455,stop_id,,0,0,,,unknown
+1408,12699,Indian School Rd & 33rd Av,EB Indian School Rd & FS 33rd Av,33.4947910000001,-112.129111,41,160,stop_id,,0,0,,,unknown
+156,10481,Broadway Rd & Central Av,EB Broadway Rd & FS Central Av,33.406549,-112.07265,45,133,stop_id,,0,0,,,unknown
+3814,18037,24th St & Thomas Rd,SB 24th St & FS Thomas Rd,33.4798210000001,-112.030312,70,146,stop_id,,0,0,,,unknown
+1808,10330,Van Buren St & 27th Av,EB Van Buren St & FS 27th Av,33.450973,-112.116819,3,166,stop_id,,0,0,,,unknown
+6994,11991,Thomas Rd & 19th Av,WB Thomas Rd & FS 19th Av,33.480755,-112.100438,29,244,stop_id,,0,0,,,unknown
+3191,14553,24th St & Jefferson St,NB 24th St & FS Jefferson St,33.4477230000001,-112.03005,70,123,stop_id,,0,0,,,unknown
+769,16176,Thomas Rd & Central Av,EB Thomas Rd & FS Central Av,33.480083,-112.072836,29,433,stop_id,,0,0,,,unknown
+6715,12791,Indian School Rd & 16th St,WB Indian School Rd & FS 16th St,33.4948680000001,-112.048274,41,235,stop_id,,0,0,,,unknown

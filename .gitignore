@@ -1,0 +1,58 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# testing
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
+# environment — .env.example is the only committed env file
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# runtime scratch
+pids/
+.DS_Store
+Thumbs.db
+
+# FortyGuard live artefacts: raw API responses and run caches are never committed.
+# They may contain account-scoped payloads and are reproducible from the probe.
+data/live/
+data/raw/phoenix_bus_stops.geojson
+data/raw/valley_metro_quarterly_ridership.json
+outputs/fortyguard_raw_*.json
+outputs/fortyguard_10_stop_results.csv
+outputs/fortyguard_probe_report.json
+outputs/fortyguard_request_plan.json
+# Local submission recordings are reviewed and uploaded separately, never committed.
+outputs/submission-video/
+# Local browser-review captures are generated evidence, not application assets.
+outputs/ux-review/
+# Capture checkpoints record activity ids for work already paid for. They are
+# operator state on one machine, not a repository artefact.
+data/generated/capture-checkpoints/
+.cache/
+
+# vercel
+.vercel
+
+# Synced from node_modules by scripts/sync-maplibre-worker.mjs at predev/prebuild
+public/maplibre-gl-worker.mjs
+public/maplibre-gl-shared.mjs

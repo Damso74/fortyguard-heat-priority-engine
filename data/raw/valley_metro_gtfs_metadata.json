@@ -1,0 +1,34 @@
+{
+  "key": "valley_metro_gtfs",
+  "title": "Valley Metro Bus Schedule (GTFS static)",
+  "producer": "Valley Metro, published by City of Phoenix Open Data",
+  "dataset_page": "https://www.phoenixopendata.com/dataset/valley-metro-bus-schedule",
+  "download_url": "https://www.phoenixopendata.com/dataset/3eae9a4a-98b9-40c8-8df7-8c00c1756235/resource/28ccc0a5-49c8-495c-b91f-193de5ce2cb7/download/googletransit.zip",
+  "licence": "Open Data Commons Attribution License (ODC-BY)",
+  "downloaded_at_utc": "2026-08-04T18:18:12.917381+00:00",
+  "artifact": {
+    "path": "data/raw/valley_metro_gtfs.zip",
+    "sha256": "f5aa6cc225bfc77b948c0d24708b79cd33489f7a315066007f6cf847c295289e",
+    "bytes": 7110085
+  },
+  "derived": {
+    "path": "data/generated/stop_service_frequency.json",
+    "canonicalSha256": "f0c04a3f1523fae844a39a5e15eb72fbfaeee134b0b69277a994876b6347b984",
+    "dayTypes": [
+      "weekday",
+      "saturday",
+      "sunday"
+    ],
+    "stops_with_service": {
+      "weekday": 7908,
+      "saturday": 7469,
+      "sunday": 7134
+    }
+  },
+  "known_limitations": [
+    "Scheduled service only; real-time deviation is not represented.",
+    "The service pattern for each day type is derived (modal), not published as such.",
+    "Frequency is a proxy for when riders are present, not a measurement of it.",
+    "The published ridership source splits Weekday / Weekend only, so the same weekend average is paired with the Saturday and the Sunday timetable separately."
+  ]
+}

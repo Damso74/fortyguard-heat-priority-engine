@@ -1,0 +1,15 @@
+When extreme heat hits Phoenix, a transit team does not need another map. It needs to know which stops to inspect first, with limited staff, and why that choice can be defended. That is why I built Heat Priority Engine. For transit operators and urban resilience teams, that replaces ad-hoc site visits with a repeatable, reviewable workflow.
+
+This pilot starts with real FortyGuard evidence: four hundred fifty stored temperature cells from three completed activities, at eight a.m., two p.m., and eight p.m., covering twenty-seven Downtown stops. The monitor shows exactly what the API returned. Every result preserves its source time, units, footprint, and evidence digest. Because the local anomaly did not persist, the product refuses to label a hotspot. Trust begins with knowing what the evidence does not prove.
+
+Heat Priority Engine combines that thermal evidence with transit demand and scheduled waiting, then turns it into ten reviewable inspection missions. Three remain selected across all three hundred twenty-four scenarios. Seven depend on assumptions. A small field team can act first on the priorities that survive uncertainty.
+
+In the planner, every stop explains its position through riders, waiting, heat, selection frequency, and rank range. Exposure and anomaly stay separate. There is no hidden weight slider and no convenient black-box answer.
+
+Then the plan becomes work. An operator opens a mission and records what the datasets cannot know: shade, shelter, accessibility, confidence, and field notes. Nothing changes silently. Only after a human reviewer accepts that evidence does the plan advance to version two.
+
+The scenario lab compares the governed plan with simple alternatives. If ridership alone, temperature alone, or scheduled waiting performs better, the product says so.
+
+Finally, the decision exports with its run identity, evidence digest, assumptions, limitations, and review state. Unsupported claims remain visible instead of being polished away.
+
+Heat Priority Engine is not another heat dashboard. It is the operating layer between FortyGuard intelligence and the next defensible field action: understand, prioritize, inspect, validate, and prove.
