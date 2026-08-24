@@ -12,8 +12,8 @@ what must be disclosed at submission.
 
 | Source | URL | Retrieved | Notes |
 |---|---|---|---|
-| Official hackathon page | <https://www.fortyguard.com/hackathon26> | 2026-08-23 | Current embedded content re-read. The FAQ and newer submission/judging panels are not fully consistent; the union is recorded below. |
-| Current submission form | <https://docs.google.com/forms/d/e/1FAIpQLSdheKfejq4uAk5dNluoaH6yBAL9N78-E1H8c_8FSnSMZKGlqQ/viewform> | 2026-08-23 | Six pages; latest resubmission before the deadline replaces earlier entries. The form requires repo, public demo, video ≤ 3 minutes, collaborator confirmation and personal declarations. |
+| Official hackathon page | <https://www.fortyguard.com/hackathon26> | 2026-08-24 | Current rendered content re-read in a browser. The submission FAQ, deadline and judging weights are recorded below. |
+| Current submission form | <https://docs.google.com/forms/d/e/1FAIpQLSdheKfejq4uAk5dNluoaH6yBAL9N78-E1H8c_8FSnSMZKGlqQ/viewform> | 2026-08-24 | Six pages; latest resubmission before the deadline replaces earlier entries. The visible form requires repo, live demo, working video and collaborator confirmation; later pages and personal declarations remain mapped below. |
 | API documentation — Known Limitations | <https://docs-api.fortyguard.com/docs/limitations> | 2026-08-04 | Angular SPA; content read from the application bundle. Plan limits, input constraints, regional coverage, credits. |
 | API documentation — Create Heatmap | <https://docs-api.fortyguard.com/docs/create-heatmap> | 2026-08-04 | Request/response shapes, `analytic_type` semantics, date range. |
 | API documentation — Authentication / Quickstart | <https://docs-api.fortyguard.com/docs/authentication> | 2026-08-04 | `api-key` header, activity lifecycle, status code table. |
@@ -288,8 +288,8 @@ on the strength of a plan.
 | Requirement | Status |
 |---|---|
 | Public GitHub repository | **Done** — <https://github.com/Damso74/fortyguard-heat-priority-engine>. Recorded as public; re-confirm the remote and its visibility before submitting. |
-| Live website / demo link | **Done and re-verified 2026-08-23** — <https://heat-priority-engine.vercel.app>. Production serves the pilot and Reports shows `Submission licensing: Ready`. Re-confirm on submission day. |
-| Add the FortyGuard collaborator account | **Invitation created 2026-08-23; acceptance pending.** GitHub accepted a `read` invitation for `Hackathon-FG` (`hackathon@fortyguard.com`) on the clean public repository. Acceptance depends on that account; the repository is already publicly readable. |
+| Live website / demo link | **Done and re-verified 2026-08-24** — <https://heat-priority-engine.vercel.app>. Desktop and 412×915 browser checks passed; the production journey reached `Plan v2` with no console error. Re-confirm immediately before submission. |
+| Add the FortyGuard collaborator account | **Done.** `Hackathon-FG` (`hackathon@fortyguard.com`) has accepted access. GitHub's permissions API reports role `read` and no pending invitation as of 2026-08-24. |
 | Submitted before 30 Aug 2026 GST | **Not done.** The form is distributed via Slack. Deadline 30 August 2026, 23:59 GST = 19:59 UTC = 12:59 America/Phoenix. |
 | FortyGuard data central to the project | **Yes, demonstrated with real data.** The default pilot serves 450 cells from three completed activities across 27 Downtown stops; its thermal gate selects `EXPOSURE_ONLY`. See §7. |
 | US geography | Yes — Phoenix, Arizona |

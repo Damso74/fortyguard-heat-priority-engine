@@ -105,9 +105,10 @@ After review, a newly captured immutable snapshot can be committed and deployed.
 
 ## Repository publication
 
-The official form names **`Hackathon-FG`** (`hackathon@fortyguard.com`). It was
-invited with read permission on 2026-08-23 after the public-repository licensing
-blocker recorded in `data-provenance.md` §8 was resolved
+The official form names **`Hackathon-FG`** (`hackathon@fortyguard.com`). It
+accepted read permission; GitHub reconfirmed role `read` with no pending invite
+on 2026-08-24. Access was granted after the public-repository licensing blocker
+recorded in `data-provenance.md` §8 was resolved
 ([`data-provenance.md` §8](data-provenance.md); ordering in
 [`submission-checklist.md`](submission-checklist.md)):
 
