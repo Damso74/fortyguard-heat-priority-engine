@@ -1,12 +1,21 @@
 import Link from 'next/link'
+import { SystemState } from '@/components/operations/SystemState'
+
+export const metadata = { title: 'Module not found' }
 
 export default function NotFound() {
   return (
-    <section className="hpe-card mx-auto max-w-xl p-8 text-center">
-      <p className="hpe-label">404</p>
-      <h1 className="mt-2 text-xl font-bold text-ink-900">Module not found</h1>
-      <p className="mt-2 text-[13px] text-ink-600">This route is not part of the verified operational workflow.</p>
-      <Link href="/" className="mt-5 inline-flex rounded-md bg-brand-600 px-4 py-2 text-[12px] font-semibold text-white">Return to Overview</Link>
-    </section>
+      <SystemState
+        code="404 · Unknown route"
+        title="Module not found"
+        description="This address is not part of the verified operational workflow. Continue from the overview or reopen a core workspace."
+        actions={
+          <>
+            <Link href="/" className="hpe-button-primary">Return to Overview</Link>
+            <Link href="/planner" className="hpe-button-secondary">Open priority planner</Link>
+            <Link href="/missions" className="hpe-button-secondary">Open missions</Link>
+          </>
+        }
+      />
   )
 }

@@ -1,6 +1,6 @@
 import { FieldMission } from '@/components/operations/FieldMission'
 
-export const metadata = { title: 'Field Mission — Heat Priority Engine' }
+export const metadata = { title: 'Field Mission', description: 'Record a bounded field observation for human evidence review.' }
 
 export default async function MissionPage({
   params,

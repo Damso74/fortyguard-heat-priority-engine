@@ -189,10 +189,12 @@ export function AppShell({
   }, [run])
 
   return (
-    // Locked app-shell layout from md up: side-by-side panel and map. Below
-    // md the page must scroll normally, or everything past the fold is
-    // unreachable by touch.
-    <div className={embedded ? 'flex min-h-[calc(100dvh-96px)] flex-col md:h-[calc(100dvh-96px)] md:overflow-hidden' : 'flex min-h-dvh flex-col md:h-dvh md:overflow-hidden'}>
+    // The split workspace needs enough width for both a useful panel and a map.
+    // Locking it at `md` left the map only 423 px wide on tablets, while the
+    // mobile `min-height` never gave MapLibre's `h-full` child a real height.
+    // Below xl the map now leads, owns an explicit height, and the document
+    // scrolls naturally into the analysis panel underneath.
+    <div className={embedded ? 'flex min-h-[calc(100dvh-96px)] flex-col xl:h-[calc(100dvh-96px)] xl:overflow-hidden' : 'flex min-h-dvh flex-col xl:h-dvh xl:overflow-hidden'}>
       {/* ------------------------------ header ------------------------------ */}
       {!embedded && <header className="shrink-0 border-b border-ink-200 bg-white">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2">
@@ -240,22 +242,19 @@ export function AppShell({
 
       {embedded && (
         <section className="shrink-0 border-b border-ink-200 bg-white px-4 py-3">
-          <p className="hpe-label text-brand-700">Plan &amp; prioritize</p>
-          <div className="mt-1 flex flex-wrap items-end justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h1 className="text-lg font-bold tracking-tight text-ink-900">Priority planner</h1>
               <p className="mt-0.5 text-[11px] text-ink-500">
-                Which Phoenix bus stops should we inspect first before the next heat wave?
+                Choose the Phoenix stops to inspect before the next heat wave.
+              </p>
+              <p className="mt-1 text-[10px] font-medium text-brand-700">
+                Start with the verified default; change one assumption only when testing it.
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-flag-700/25 bg-flag-100 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wide text-flag-700">
-                Human approval required
-              </span>
-              <Link href="/missions" className="rounded-md bg-brand-600 px-3 py-2 text-[12px] font-semibold text-white hover:bg-brand-700">
-                Create inspection missions →
-              </Link>
-            </div>
+            <Link href="/missions" className="rounded-md bg-brand-600 px-3 py-2 text-[12px] font-semibold text-white hover:bg-brand-700">
+              Create inspection missions →
+            </Link>
           </div>
         </section>
       )}
@@ -273,12 +272,13 @@ export function AppShell({
       <ModeBanner dataMode={run ? run.manifest.dataMode : null} />
 
       {/* ------------------------------- body ------------------------------- */}
-      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
+      <div className="flex min-h-0 flex-1 flex-col xl:flex-row">
         <aside
-          className={`flex shrink-0 flex-col border-ink-200 bg-white md:h-full md:overflow-y-auto md:border-r ${
+          id="planner-analysis-panel"
+          className={`order-2 flex shrink-0 flex-col border-t border-ink-200 bg-white xl:order-1 xl:h-full xl:overflow-y-auto xl:border-r xl:border-t-0 ${
             panelOpen
-              ? 'md:w-[330px] lg:w-[380px]'
-              : 'md:w-0 md:overflow-hidden md:border-r-0'
+              ? 'xl:w-[340px]'
+              : 'xl:hidden'
           }`}
           aria-label="Analysis panel"
         >
@@ -324,15 +324,12 @@ export function AppShell({
                */}
               <div className="border-t border-brand-500/30 bg-brand-50 px-3 py-2">
                 <p data-testid="result-headline" className="text-[14px] leading-snug text-ink-900">
-                  <strong className="hpe-num">{run.plan.robustIds.length}</strong> robust{' '}
-                  {run.plan.robustIds.length === 1 ? 'priority' : 'priorities'} +{' '}
+                  <strong className="hpe-num">{run.plan.robustIds.length}</strong> stable +{' '}
                   <strong className="hpe-num">{run.plan.assumptionDependentIds.length}</strong>{' '}
-                  assumption-dependent{' '}
-                  {run.plan.assumptionDependentIds.length === 1 ? 'candidate' : 'candidates'}
+                  {run.plan.assumptionDependentIds.length === 1 ? 'changes' : 'change'} with assumptions
                 </p>
                 <p className="mt-0.5 text-[10px] leading-tight text-ink-600">
-                  Robust = selected in all {run.plan.scenarioCount} scenarios of the assumption
-                  envelope. Everything else is in the plan because of a setting nobody has observed.
+                  Stable means selected in all {run.plan.scenarioCount} tested combinations.
                 </p>
               </div>
               <ResultList
@@ -373,14 +370,14 @@ export function AppShell({
                * methodology page, and the CTA says "audit" because that is what
                * the page supports.
                */}
-              <section
+              <details
                 aria-labelledby="method-cards-h"
                 data-testid="method-cards"
                 className="border-t border-ink-200 p-3"
               >
-                <h2 id="method-cards-h" className="hpe-label">
-                  Why this list can be trusted — and how far
-                </h2>
+                <summary id="method-cards-h" className="min-h-11 cursor-pointer py-3 text-[12px] font-semibold text-brand-700">
+                  Why these rankings?
+                </summary>
                 <ul className="mt-1.5 space-y-1.5">
                   <li className="hpe-card p-2">
                     <p className="text-[12px] font-semibold text-ink-900">Two axes, never blended</p>
@@ -391,11 +388,10 @@ export function AppShell({
                   </li>
                   <li className="hpe-card p-2">
                     <p className="text-[12px] font-semibold text-ink-900">
-                      Tested across {run.plan.scenarioCount} assumption scenarios
+                      Tested across {run.plan.scenarioCount} combinations
                     </p>
                     <p className="mt-0.5 text-[11px] leading-snug text-ink-500">
-                      A selection is robust only when every stated assumption keeps selecting it;
-                      everything else is labelled assumption-dependent.
+                      A stop is stable only when every tested assumption keeps selecting it.
                     </p>
                   </li>
                   <li className="hpe-card p-2">
@@ -412,14 +408,17 @@ export function AppShell({
                 >
                   Audit the full methodology
                 </a>
-              </section>
+              </details>
             </>
           )}
         </aside>
 
         {/* -------------------------------- map ------------------------------ */}
-        <main id={embedded ? undefined : 'main'} className="relative min-h-[60vh] flex-1 md:h-full md:min-h-0">
-          <div className="absolute left-3 top-3 z-30 flex items-center gap-1 rounded border border-ink-200 bg-white/95 p-1 shadow-sm">
+        <section
+          aria-label="Priority map and analysis"
+          className="relative order-1 h-[68dvh] min-h-[460px] w-full flex-none bg-ink-50 sm:min-h-[520px] xl:order-2 xl:h-full xl:min-h-0 xl:flex-1"
+        >
+          <div className="absolute left-3 top-3 z-30 flex max-w-[calc(100%-1.5rem)] items-center gap-1 overflow-x-auto rounded border border-ink-200 bg-white/95 p-1 shadow-sm backdrop-blur-sm xl:max-w-[calc(100%-9rem)]">
             {(['temperature', 'anomaly', 'combined'] as const).map((mode) => (
               <button
                 key={mode}
@@ -439,12 +438,22 @@ export function AppShell({
             ))}
           </div>
 
+          <a
+            href="#planner-analysis-panel"
+            className="absolute right-3 top-14 z-30 rounded border border-ink-200 bg-white/95 px-2.5 py-1.5 text-[11px] font-semibold text-ink-700 shadow-sm backdrop-blur-sm hover:bg-white xl:hidden"
+          >
+            Ranked plan & controls ↓
+          </a>
+
           <button
             type="button"
+            data-testid="toggle-analysis-panel"
+            aria-controls="planner-analysis-panel"
+            aria-expanded={panelOpen}
             onClick={() => setPanelOpen((value) => !value)}
-            className="absolute right-3 top-3 z-30 hidden rounded border border-ink-200 bg-white/95 px-2 py-1 text-[12px] text-ink-700 shadow-sm hover:bg-ink-50 md:block"
+            className="absolute right-3 top-3 z-30 hidden rounded border border-ink-200 bg-white/95 px-3 py-1.5 text-[12px] font-semibold text-ink-800 shadow-sm backdrop-blur-sm hover:border-brand-300 hover:bg-white hover:text-brand-700 xl:block"
           >
-            {panelOpen ? 'Hide panel' : 'Show panel'}
+            {panelOpen ? 'Expand map' : 'Open plan'}
           </button>
 
           {run ? (
@@ -469,7 +478,7 @@ export function AppShell({
               </p>
             </div>
           )}
-        </main>
+        </section>
       </div>
     </div>
   )

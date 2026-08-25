@@ -3,7 +3,7 @@ import { AREAS_OF_INTEREST, FORTYGUARD_PILOT_REQUEST } from '@/lib/geo/aoi'
 import { serverEnv } from '@/lib/config/server-env'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Priority Planner — Heat Priority Engine' }
+export const metadata = { title: 'Priority Planner', description: 'Explore weight-free Phoenix transit heat priorities and their uncertainty.' }
 
 export default function PlannerPage() {
   serverEnv()

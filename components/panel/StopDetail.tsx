@@ -187,8 +187,8 @@ export function StopDetail({
             }
           >
             {full.assumptionSensitive
-              ? `Assumption-dependent · ${full.scenarioSelectionCount}/${full.scenarioCount}`
-              : `Robust · ${full.scenarioCount}/${full.scenarioCount}`}
+              ? `Variable · ${full.scenarioSelectionCount}/${full.scenarioCount} tests`
+              : `Stable · ${full.scenarioCount}/${full.scenarioCount} tests`}
           </Badge>
         ) : null}
         <ConfidenceBadge band={full.confidence.band} score={full.confidence.score} />
@@ -366,7 +366,7 @@ export function StopDetail({
             <p className="mt-1 text-[10px] leading-tight text-ink-500">
               {full.assumptionSensitive
                 ? 'Assumption-dependent: it leaves the plan under at least one stated assumption.'
-                : 'Robust: selected under every stated assumption in the envelope.'}{' '}
+                : 'Stable: selected under every tested assumption.'}{' '}
               A wide rank range means the position moves even where the stop is kept.
             </p>
             {full.assumptionSensitive && full.sensitiveTo.length > 0 && (

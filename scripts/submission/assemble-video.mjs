@@ -62,11 +62,13 @@ if (analysis.status !== 0) {
 const loudnessJson = /\{[\s\S]*?"target_offset"\s*:\s*"[^"]+"[\s\S]*?\}/.exec(analysis.stderr)?.[0]
 if (!loudnessJson) throw new Error('Unable to read the first-pass loudness measurement.')
 const loudness = JSON.parse(loudnessJson)
-const audioFilter =
-  '[1:a]loudnorm=I=-16:TP=-2:LRA=11:' +
-  `measured_I=${loudness.input_i}:measured_TP=${loudness.input_tp}:` +
-  `measured_LRA=${loudness.input_lra}:measured_thresh=${loudness.input_thresh}:` +
-  `offset=${loudness.target_offset}:linear=true,apad=pad_dur=180[a]`
+const calibratedFilter = process.env.AUDIO_FILTER
+const audioFilter = calibratedFilter
+  ? `[1:a]${calibratedFilter},apad=pad_dur=180[a]`
+  : '[1:a]loudnorm=I=-16:TP=-2:LRA=11:' +
+    `measured_I=${loudness.input_i}:measured_TP=${loudness.input_tp}:` +
+    `measured_LRA=${loudness.input_lra}:measured_thresh=${loudness.input_thresh}:` +
+    `offset=${loudness.target_offset}:linear=true,apad=pad_dur=180[a]`
 
 const outcome = spawnSync(
   ffmpeg,

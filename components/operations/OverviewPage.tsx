@@ -1,56 +1,21 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useOperations } from '@/components/operations/OperationsProvider'
 
-const DECISION_WORKFLOW = [
-  ['01', 'Understand heat', '/heat'],
-  ['02', 'Prioritize', '/planner'],
-  ['03', 'Inspect', '/missions'],
-  ['04', 'Validate', '/evidence'],
-  ['05', 'Prove', '/reports'],
-] as const
+const PriorityMap = dynamic(
+  () => import('@/components/map/PriorityMap').then((module) => module.PriorityMap),
+  {
+    ssr: false,
+    loading: () => <div className="grid h-full place-items-center text-[13px] text-ink-500">Loading measured heat…</div>,
+  },
+)
 
-function MetricCard({
-  label,
-  value,
-  detail,
-  tone = 'default',
-}: {
-  label: string
-  value: string
-  detail: string
-  tone?: 'default' | 'heat' | 'verified'
-}) {
-  const toneClass =
-    tone === 'heat'
-      ? 'border-l-heat-500'
-      : tone === 'verified'
-        ? 'border-l-ok-700'
-        : 'border-l-brand-500'
-  return (
-    <article className={`hpe-card border-l-4 ${toneClass} p-4`}>
-      <p className="hpe-label">{label}</p>
-      <p className="hpe-num mt-2 text-2xl font-bold tracking-tight text-ink-900">{value}</p>
-      <p className="mt-1 text-[11px] leading-relaxed text-ink-500">{detail}</p>
-    </article>
-  )
-}
-
-export function OverviewPage() {
+export function OverviewPage({ mapStyleUrl }: { mapStyleUrl: string }) {
   const { run, loading, error, missions, refresh } = useOperations()
-
-  const coverage = useMemo(() => {
-    if (!run) return null
-    const selected = new Set(run.plan.selectedIds)
-    const total = run.results.reduce((sum, result) => sum + (result.exposure ?? 0), 0)
-    const covered = run.results.reduce(
-      (sum, result) => sum + (selected.has(String(result.stop.id)) ? result.exposure ?? 0 : 0),
-      0,
-    )
-    return total > 0 ? (covered / total) * 100 : null
-  }, [run])
+  const [activeId, setActiveId] = useState<string | null>(null)
 
   const selected = useMemo(() => {
     if (!run) return []
@@ -62,143 +27,174 @@ export function OverviewPage() {
       .map((entry) => ({ entry, result: resultById.get(entry.candidateId) }))
   }, [run])
 
+  const mapStops = useMemo(() => {
+    if (!run) return []
+    const entryById = new Map(run.plan.entries.map((entry) => [entry.candidateId, entry]))
+    const selectedIds = new Set(run.plan.selectedIds)
+    return run.results.map((result) => {
+      const id = String(result.stop.id)
+      const entry = entryById.get(id)
+      return {
+        id,
+        lon: result.stop.lon,
+        lat: result.stop.lat,
+        name: result.stop.name,
+        rank: entry?.selected ? entry.rank : null,
+        selected: selectedIds.has(id),
+        complete: result.complete,
+        exposure: result.exposure,
+        exposurePercentile: result.exposurePercentile,
+        anomalyZ: result.anomalyZ,
+        quadrant: result.quadrant,
+      }
+    })
+  }, [run])
+
   const submitted = missions.filter((mission) => mission.status === 'submitted').length
   const reviewed = missions.filter((mission) => mission.status === 'reviewed').length
+  const pendingReview = missions.find((mission) => mission.observation?.review === 'pending')
+  const activeMission = missions.find((mission) => mission.status === 'assigned' || mission.status === 'in_progress')
+  const nextAction = pendingReview
+    ? { title: 'Review the new field observation', href: '/evidence', label: 'Review observation' }
+    : activeMission
+      ? { title: `Continue mission #${activeMission.rank}`, href: `/missions/${activeMission.id}`, label: 'Continue mission' }
+      : missions.length > 0 && reviewed === missions.length
+        ? { title: 'Download the reviewed decision brief', href: '/reports', label: 'Open audit' }
+        : { title: `Review ${missions.length || 10} inspection candidates`, href: '/missions', label: 'Review candidates' }
 
   if (error) {
     return (
       <section className="hpe-card mx-auto max-w-xl p-6 text-center" role="alert">
-        <p className="text-base font-bold text-ink-900">The verified pilot could not be loaded.</p>
+        <h1 className="text-xl font-bold text-ink-900">The Phoenix pilot could not be loaded.</h1>
         <p className="mt-2 text-[13px] text-ink-600">{error}</p>
-        <button type="button" onClick={refresh} className="mt-4 rounded-md bg-brand-600 px-4 py-2 text-[13px] font-semibold text-white">
-          Try again
-        </button>
+        <button type="button" onClick={refresh} className="hpe-button-primary mt-4">Try again</button>
       </section>
     )
   }
 
   return (
-    <div className="space-y-5">
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(340px,0.65fr)]">
-        <div className="overflow-hidden rounded-xl border border-[#d7dee8] bg-[#0f2238] p-6 text-white shadow-sm sm:p-7">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-cyan-100">
-              Real FortyGuard pilot
-            </span>
-            <span className="rounded-full border border-amber-300/25 bg-amber-300/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-100">
-              Exposure-only
-            </span>
+    <div className="space-y-5" aria-busy={loading}>
+      <section className="grid min-h-[660px] overflow-hidden rounded-[24px] bg-ink-900 shadow-[0_24px_70px_rgb(11_24_40_/_0.18)] ring-1 ring-ink-900/10 xl:grid-cols-[minmax(390px,0.78fr)_minmax(620px,1.22fr)]">
+        <div className="relative isolate flex flex-col justify-between overflow-hidden p-7 sm:p-8 xl:p-10">
+          <div className="pointer-events-none absolute -left-24 top-12 -z-10 h-72 w-72 rounded-full bg-brand-600/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 right-0 -z-10 h-80 w-80 rounded-full bg-heat-500/20 blur-3xl" />
+
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full border border-ok-700/40 bg-ok-700/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-200">
+                Real FortyGuard pilot
+              </span>
+              <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-300">
+                Historical pilot · July 2024
+              </span>
+            </div>
+
+            <h1 className="mt-6 max-w-2xl text-[clamp(2.5rem,3.4vw,4rem)] font-bold leading-[0.98] tracking-[-0.055em] text-white">
+              Inspect the right bus stops
+              <span className="mt-2 block text-heat-500">before the next heat wave.</span>
+            </h1>
+            <p className="mt-5 max-w-xl text-[16px] leading-7 text-slate-300 sm:text-[17px]">
+              Turn measured heat and transit demand into a field plan your team can explain, review, and defend.
+            </p>
+            <p className="mt-3 text-[11px] font-semibold leading-5 text-slate-300">
+              {loading ? 'Loading verified measurements…' : `${run?.results.length ?? 0} stops analyzed · ${run?.thermal.cellCount ?? 0} heat measurements · Human review required`}
+            </p>
+            <p className="mt-1 text-[10px] leading-4 text-slate-400">
+              Heat and ridership: 2024 · Scheduled service: July 2026
+            </p>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/planner" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-heat-500 px-5 py-3 text-[14px] font-bold text-white shadow-lg shadow-heat-700/25 transition-colors hover:bg-heat-600">
+                View priority map <span className="ml-2" aria-hidden="true">→</span>
+              </Link>
+              <Link href="/heat" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 bg-white/8 px-5 py-3 text-[14px] font-bold text-white transition-colors hover:bg-white/14">
+                Explore measured heat
+              </Link>
+            </div>
           </div>
-          <h1 className="mt-5 max-w-3xl text-3xl font-bold leading-tight tracking-[-0.025em] sm:text-4xl">
-            Turn heat evidence into the next defensible field action.
-          </h1>
-          <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-slate-300">
-            Prioritize the Phoenix transit stops a constrained team should inspect first, preserve uncertainty, and carry every decision into a reviewable field mission.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/heat" className="rounded-lg bg-[#e85d2a] px-4 py-2.5 text-[13px] font-bold text-white shadow-sm hover:bg-[#cf4d20]">
-              Explore heat evidence
-            </Link>
-            <Link href="/planner" className="rounded-lg border border-white/20 bg-white/8 px-4 py-2.5 text-[13px] font-semibold text-white hover:bg-white/12">
-              Open priority planner
-            </Link>
-          </div>
+
+          <dl className="mt-8 grid grid-cols-3 divide-x divide-white/10 border-t border-white/10 pt-5">
+            <div className="pr-4">
+              <dt className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">Robust picks</dt>
+              <dd className="hpe-num mt-2 text-3xl font-bold text-white">{run?.plan.robustIds.length ?? '—'}</dd>
+            </div>
+            <div className="px-4">
+              <dt className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">Tested cases</dt>
+              <dd className="hpe-num mt-2 text-3xl font-bold text-white">{run?.plan.scenarioCount ?? '—'}</dd>
+            </div>
+            <div className="pl-4">
+              <dt className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">Heat cells</dt>
+              <dd className="hpe-num mt-2 text-3xl font-bold text-white">{run?.thermal.cellCount ?? '—'}</dd>
+            </div>
+          </dl>
         </div>
 
-        <aside className="hpe-card p-5">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="hpe-label">Recommended next action</p>
-              <h2 className="mt-2 text-xl font-bold tracking-tight text-ink-900">Confirm the 10 proposed missions</h2>
-            </div>
-            <span className="rounded-full bg-heat-100 px-2.5 py-1 text-[10px] font-bold uppercase text-heat-700">Human approval</span>
+        <div className="relative min-h-[520px] border-t border-white/10 bg-ink-800 xl:border-l xl:border-t-0">
+          {run ? (
+            <PriorityMap
+              compact
+              cells={run.heatCells}
+              stops={mapStops}
+              bbox={run.aoi.bbox}
+              layerMode="temperature"
+              valueFieldLabel="Temperature"
+              anomalyLabel="Local anomaly"
+              activeId={activeId}
+              temperatureUnit={run.methodology.exposure.thermalUnitLabel}
+              loadUnitShort={run.methodology.exposure.loadUnitShort}
+              onSelect={setActiveId}
+              styleUrl={mapStyleUrl}
+            />
+          ) : (
+            <div className="grid h-full place-items-center text-[13px] text-slate-300">Preparing the measured map…</div>
+          )}
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-ink-900/35 to-transparent" />
+          <span className="pointer-events-none absolute left-4 top-4 z-20 rounded-full border border-white/35 bg-ink-900/80 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white shadow-lg backdrop-blur-md">
+            Measured temperature · darker is warmer
+          </span>
+          <div className="pointer-events-none absolute inset-x-4 bottom-4 z-20 rounded-2xl border border-white/60 bg-white/94 p-4 shadow-2xl backdrop-blur-md sm:inset-x-auto sm:right-4 sm:w-[300px]">
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-brand-700">Operational answer</p>
+            <p className="mt-1 text-[15px] font-bold text-ink-900">
+              {run?.plan.capacity ?? 10} inspection candidates · {run?.plan.robustIds.length ?? 0} robust
+            </p>
+            <p className="mt-1 text-[11px] leading-4 text-ink-600">
+              The other {run?.plan.assumptionDependentIds.length ?? 0} change with the tested assumptions.
+            </p>
           </div>
-          <p className="mt-3 text-[13px] leading-relaxed text-ink-600">
-            The engine has ranked the covered stops. Field evidence is still needed before any shelter or feasibility statement can be made.
-          </p>
-          <Link href="/missions" className="mt-4 inline-flex rounded-md bg-brand-600 px-3 py-2 text-[12px] font-semibold text-white hover:bg-brand-700">
-            Review inspection missions
-          </Link>
-          <dl className="mt-5 grid grid-cols-3 gap-2 border-t border-ink-100 pt-4 text-center">
-            <div><dt className="text-[10px] text-ink-500">Draft</dt><dd className="hpe-num mt-1 text-lg font-bold">{Math.max(0, missions.length - submitted - reviewed)}</dd></div>
-            <div><dt className="text-[10px] text-ink-500">Submitted</dt><dd className="hpe-num mt-1 text-lg font-bold">{submitted}</dd></div>
-            <div><dt className="text-[10px] text-ink-500">Reviewed</dt><dd className="hpe-num mt-1 text-lg font-bold">{reviewed}</dd></div>
-          </dl>
-        </aside>
+        </div>
       </section>
 
-      <nav aria-label="Decision workflow" className="hpe-card grid overflow-hidden sm:grid-cols-5">
-        {DECISION_WORKFLOW.map(([step, label, href]) => (
-          <Link
-            key={href}
-            href={href}
-            className="group flex items-center gap-3 border-b border-ink-100 px-4 py-3 last:border-b-0 hover:bg-ink-50 sm:border-b-0 sm:border-r sm:last:border-r-0"
-          >
-            <span className="hpe-num text-[10px] font-bold text-brand-700">{step}</span>
-            <span className="text-[12px] font-semibold text-ink-700 group-hover:text-ink-900">{label}</span>
-          </Link>
-        ))}
-      </nav>
-
-      <section aria-label="Pilot metrics" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <MetricCard label="Robust priorities" value={loading ? '—' : String(run?.plan.robustIds.length ?? 0)} detail="Selected in every tested assumption scenario." tone="verified" />
-        <MetricCard label="Conditional candidates" value={loading ? '—' : String(run?.plan.assumptionDependentIds.length ?? 0)} detail="Selected under the base settings, but not every scenario." tone="heat" />
-        <MetricCard label="Modelled exposure covered" value={coverage === null ? '—' : `${coverage.toFixed(1)}%`} detail="Share of modelled load represented by the selected stops." />
-        <MetricCard label="Thermal evidence" value={loading ? '—' : `${run?.thermal.cellCount ?? 0} cells`} detail={`${run?.request.snapshotTimes.length ?? 3} stored FortyGuard snapshots · no live credit spent.`} />
-      </section>
-
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1.2fr)_minmax(360px,0.8fr)]">
+      <section className="grid gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)]">
         <article className="hpe-card overflow-hidden">
           <div className="flex items-center justify-between border-b border-ink-100 px-5 py-4">
-            <div>
-              <p className="hpe-label">Current priority plan</p>
-              <h2 className="mt-1 text-base font-bold text-ink-900">Highest-ranked inspection candidates</h2>
-            </div>
-            <Link href="/planner" className="text-[12px] font-semibold text-brand-700 underline underline-offset-4">View full plan</Link>
+            <div><p className="hpe-label">Inspect first</p><h2 className="mt-1 text-base font-bold text-ink-900">Top five stops</h2></div>
+            <Link href="/planner" className="text-[12px] font-semibold text-brand-700 underline underline-offset-4">View all {run?.plan.capacity ?? 10}</Link>
           </div>
           <ol className="divide-y divide-ink-100">
             {selected.length === 0
-              ? Array.from({ length: 5 }, (_, index) => <li key={index} className="h-16 animate-pulse bg-ink-50/50" />)
+              ? Array.from({ length: 5 }, (_, index) => <li key={index} className="h-16 animate-pulse bg-ink-50/50 motion-reduce:animate-none" />)
               : selected.map(({ entry, result }) => {
-                  const robust = run?.plan.robustIds.includes(entry.candidateId)
+                  const stable = run?.plan.robustIds.includes(entry.candidateId)
                   return (
-                    <li key={entry.candidateId} className="grid grid-cols-[42px_minmax(0,1fr)_auto] items-center gap-3 px-5 py-3">
-                      <span className="hpe-num grid h-8 w-8 place-items-center rounded-md bg-ink-50 text-[12px] font-bold text-ink-700">#{entry.rank}</span>
-                      <div className="min-w-0">
-                        <p className="truncate text-[13px] font-semibold text-ink-900">{result?.stop.name ?? `Stop ${entry.candidateId}`}</p>
-                        <p className="mt-0.5 text-[11px] text-ink-500">Selected in {result?.scenarioSelectionCount ?? 0}/{result?.scenarioCount ?? 0} scenarios</p>
-                      </div>
-                      <span className={`rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wide ${robust ? 'bg-ok-100 text-ok-700' : 'bg-flag-100 text-flag-700'}`}>
-                        {robust ? 'Robust' : 'Conditional'}
-                      </span>
+                    <li key={entry.candidateId} className="grid grid-cols-[40px_minmax(0,1fr)_auto] items-center gap-3 px-5 py-3">
+                      <span className="hpe-num text-[13px] font-bold text-ink-500">#{entry.rank}</span>
+                      <div className="min-w-0"><p className="truncate text-[13px] font-semibold text-ink-900">{result?.stop.name ?? `Stop ${entry.candidateId}`}</p><p className="mt-0.5 text-[11px] text-ink-500">{stable ? 'Stable in all tested combinations' : 'Changes with assumptions'}</p></div>
+                      <span className={`rounded-full px-2 py-1 text-[9px] font-bold uppercase tracking-wide ${stable ? 'bg-ok-100 text-ok-700' : 'bg-flag-100 text-flag-700'}`}>{stable ? 'Stable' : 'Variable'}</span>
                     </li>
                   )
                 })}
           </ol>
         </article>
 
-        <article className="hpe-card p-5">
-          <p className="hpe-label">Decision agent</p>
-          <h2 className="mt-1 text-base font-bold text-ink-900">Observable, constrained workflow</h2>
-          <ol className="mt-4 space-y-3">
-            {[
-              ['Checked stored FortyGuard snapshots', 'Complete'],
-              ['Validated field, unit and Phoenix time', 'Complete'],
-              ['Tested spatial persistence', run?.manifest.mode === 'EXPOSURE_ONLY' ? 'Limited' : 'Complete'],
-              ['Disabled unsupported hotspot claims', 'Complete'],
-              ['Stress-tested ranking assumptions', 'Complete'],
-              ['Drafted inspection missions', 'Awaiting approval'],
-            ].map(([step, status], index) => (
-              <li key={step} className="grid grid-cols-[24px_minmax(0,1fr)_auto] items-center gap-2 text-[12px]">
-                <span className={`grid h-6 w-6 place-items-center rounded-full text-[10px] font-bold ${status === 'Limited' ? 'bg-flag-100 text-flag-700' : status === 'Awaiting approval' ? 'bg-ink-100 text-ink-600' : 'bg-ok-100 text-ok-700'}`}>{index + 1}</span>
-                <span className="text-ink-700">{step}</span>
-                <span className="text-[10px] font-semibold text-ink-500">{status}</span>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-5 rounded-lg border border-flag-700/25 bg-flag-100/50 p-3">
-            <p className="text-[12px] font-bold text-flag-700">Claim withheld</p>
-            <p className="mt-1 text-[11px] leading-relaxed text-ink-700">This run cannot support a persistent local-hotspot claim. Absolute heat remains available for exposure prioritization.</p>
+        <article className="flex flex-col justify-between overflow-hidden rounded-xl bg-gradient-to-br from-brand-700 to-ink-900 p-5 text-white shadow-lg">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-brand-100">Next action</p>
+            <h2 className="mt-2 text-xl font-bold tracking-tight text-white">{nextAction.title}</h2>
+            <p className="mt-3 text-[13px] leading-5 text-slate-300">A person confirms every field observation before the reviewed decision changes.</p>
+          </div>
+          <div className="mt-5">
+            <Link href={nextAction.href} className="inline-flex min-h-11 items-center justify-center rounded-lg bg-white px-4 py-2 text-[13px] font-bold text-brand-700 transition-colors hover:bg-brand-50">{nextAction.label} →</Link>
+            <p className="mt-4 text-[11px] text-slate-300">{submitted} awaiting review · {reviewed} reviewed</p>
           </div>
         </article>
       </section>

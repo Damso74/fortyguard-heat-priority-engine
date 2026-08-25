@@ -252,10 +252,10 @@ export function ResultList({
                               : 'bg-ok-100 text-ok-700 ring-ok-700/20'
                           }`}
                         >
-                          {result.assumptionSensitive ? 'assumption-dependent' : 'robust'}
+                          {result.assumptionSensitive ? 'variable' : 'stable'}
                         </span>
                         <span className="text-ink-500">
-                          {result.scenarioSelectionCount}/{result.scenarioCount} scenarios
+                          {result.scenarioSelectionCount}/{result.scenarioCount} tests
                         </span>
                       </>
                     ) : (
@@ -281,9 +281,8 @@ export function ResultList({
       </ol>
 
       <p className="border-t border-ink-200 px-2 py-1 text-[10px] text-ink-500">
-        {rows.length} shown · estimated scenario exposure load in {loadUnitShort} over the analysed
-        hours, modelled not measured · anomaly in robust σ against the surrounding kilometre · rank
-        range is the span of positions the stop takes across the scenarios that select it
+        {rows.length} shown · modelled exposure in {loadUnitShort} · temperature anomaly and rank
+        range remain available in each stop detail
       </p>
     </section>
   )

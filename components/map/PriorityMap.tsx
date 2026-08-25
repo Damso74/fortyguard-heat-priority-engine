@@ -75,6 +75,7 @@ export function PriorityMap({
   loadUnitShort,
   onSelect,
   styleUrl,
+  compact = false,
 }: {
   cells: readonly MapCell[]
   stops: readonly MapStop[]
@@ -96,6 +97,7 @@ export function PriorityMap({
   loadUnitShort: string
   onSelect: (id: string) => void
   styleUrl?: string
+  compact?: boolean
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const mapRef = useRef<import('maplibre-gl').Map | null>(null)
@@ -107,6 +109,7 @@ export function PriorityMap({
   // (a worker that never started), so the fact of rendering is now observable
   // and asserted end to end, not assumed.
   const [cellsDrawn, setCellsDrawn] = useState(false)
+  const [thermalCoverage, setThermalCoverage] = useState(0)
   const [hovered, setHovered] = useState<Hovered | null>(null)
   const onSelectRef = useRef(onSelect)
   onSelectRef.current = onSelect
@@ -118,6 +121,23 @@ export function PriorityMap({
     // Trim the tails so a single extreme cell cannot flatten the whole ramp.
     return { min: at(0.02), max: at(0.98) }
   }, [cells])
+
+  const thermalBounds = useMemo<BoundingBox>(() => {
+    let minLon = Number.POSITIVE_INFINITY
+    let minLat = Number.POSITIVE_INFINITY
+    let maxLon = Number.NEGATIVE_INFINITY
+    let maxLat = Number.NEGATIVE_INFINITY
+    for (const cell of cells) {
+      for (const [lon, lat] of cell.ring) {
+        minLon = Math.min(minLon, lon)
+        minLat = Math.min(minLat, lat)
+        maxLon = Math.max(maxLon, lon)
+        maxLat = Math.max(maxLat, lat)
+      }
+    }
+    if (![minLon, minLat, maxLon, maxLat].every(Number.isFinite)) return bbox
+    return { minLon, minLat, maxLon, maxLat }
+  }, [bbox, cells])
 
   /* ------------------------------ create map ----------------------------- */
   useEffect(() => {
@@ -145,10 +165,10 @@ export function PriorityMap({
           container: containerRef.current,
           style: resolveMapStyle(styleUrl) as never,
           bounds: [
-            [bbox.minLon, bbox.minLat],
-            [bbox.maxLon, bbox.maxLat],
+            [thermalBounds.minLon, thermalBounds.minLat],
+            [thermalBounds.maxLon, thermalBounds.maxLat],
           ],
-          fitBoundsOptions: { padding: 40 },
+          fitBoundsOptions: { padding: 12 },
           attributionControl: false,
         })
 
@@ -157,11 +177,20 @@ export function PriorityMap({
           map.resize()
           map.fitBounds(
             [
-              [bbox.minLon, bbox.minLat],
-              [bbox.maxLon, bbox.maxLat],
+              [thermalBounds.minLon, thermalBounds.minLat],
+              [thermalBounds.maxLon, thermalBounds.maxLat],
             ],
-            { padding: 24, duration: 0 },
+            { padding: 12, duration: 0 },
           )
+          window.requestAnimationFrame(() => {
+            if (cancelled || !map) return
+            const northWest = map.project([thermalBounds.minLon, thermalBounds.maxLat])
+            const southEast = map.project([thermalBounds.maxLon, thermalBounds.minLat])
+            const canvas = map.getCanvas()
+            const widthRatio = Math.abs(southEast.x - northWest.x) / canvas.clientWidth
+            const heightRatio = Math.abs(southEast.y - northWest.y) / canvas.clientHeight
+            setThermalCoverage(Math.max(widthRatio, heightRatio))
+          })
         }
         fitFootprintRef.current = fitFootprint
 
@@ -182,7 +211,9 @@ export function PriorityMap({
         map.addControl(
           new maplibre.AttributionControl({ compact: true, customAttribution: BASEMAP_ATTRIBUTION }),
         )
-        map.addControl(new maplibre.NavigationControl({ showCompass: false }), 'top-right')
+        // Keep zoom away from the planner toolbar and panel-expansion action.
+        // MapLibre stacks this cleanly above the scale control.
+        map.addControl(new maplibre.NavigationControl({ showCompass: false }), 'bottom-left')
         map.addControl(new maplibre.ScaleControl({ unit: 'metric' }), 'bottom-left')
 
         map.on('error', (event) => {
@@ -199,7 +230,11 @@ export function PriorityMap({
             id: 'cells-temperature',
             type: 'fill',
             source: 'cells',
-            paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.84 },
+            paint: {
+              'fill-color': '#ffffff',
+              'fill-opacity': 0.96,
+              'fill-outline-color': 'rgba(118, 48, 13, 0.18)',
+            },
           })
           map.addLayer({
             id: 'cells-anomaly',
@@ -250,6 +285,18 @@ export function PriorityMap({
               'circle-stroke-color': '#12506b',
             },
           })
+          // Visible stops can be only a few pixels wide when zoomed out. This
+          // transparent interaction layer gives every stop a 32 px target for
+          // mouse and touch without changing the analytical symbology.
+          map.addLayer({
+            id: 'stops-hit',
+            type: 'circle',
+            source: 'stops',
+            paint: {
+              'circle-radius': 16,
+              'circle-color': 'rgba(0,0,0,0)',
+            },
+          })
           map.addLayer({
             id: 'stops-rank',
             type: 'symbol',
@@ -263,35 +310,33 @@ export function PriorityMap({
             paint: { 'text-color': '#ffffff' },
           })
 
-          for (const layer of ['stops-selected', 'stops-other']) {
-            map.on('click', layer, (event) => {
-              const id = event.features?.[0]?.properties?.id
-              if (typeof id === 'string') onSelectRef.current(id)
+          map.on('click', 'stops-hit', (event) => {
+            const id = event.features?.[0]?.properties?.id
+            if (typeof id === 'string') onSelectRef.current(id)
+          })
+          map.on('mousemove', 'stops-hit', (event) => {
+            const feature = event.features?.[0]
+            if (!feature || !map) return
+            map.getCanvas().style.cursor = 'pointer'
+            const p = feature.properties ?? {}
+            setHovered({
+              x: event.point.x,
+              y: event.point.y,
+              title: String(p.name ?? 'Stop'),
+              rows: [
+                ['Exposure', p.exposureText ? String(p.exposureText) : 'not available'],
+                ['Heat anomaly', p.anomalyText ? String(p.anomalyText) : 'not available'],
+                ['Plan rank', p.rank && Number(p.rank) > 0 ? `#${p.rank}` : 'not selected'],
+              ],
             })
-            map.on('mousemove', layer, (event) => {
-              const feature = event.features?.[0]
-              if (!feature || !map) return
-              map.getCanvas().style.cursor = 'pointer'
-              const p = feature.properties ?? {}
-              setHovered({
-                x: event.point.x,
-                y: event.point.y,
-                title: String(p.name ?? 'Stop'),
-                rows: [
-                  ['Exposure', p.exposureText ? String(p.exposureText) : 'not available'],
-                  ['Heat anomaly', p.anomalyText ? String(p.anomalyText) : 'not available'],
-                  ['Plan rank', p.rank && Number(p.rank) > 0 ? `#${p.rank}` : 'not selected'],
-                ],
-              })
-            })
-            map.on('mouseleave', layer, () => {
-              if (map) map.getCanvas().style.cursor = ''
-              setHovered(null)
-            })
-          }
+          })
+          map.on('mouseleave', 'stops-hit', () => {
+            if (map) map.getCanvas().style.cursor = ''
+            setHovered(null)
+          })
 
           map.on('mousemove', 'cells-temperature', (event) => {
-            if (map?.queryRenderedFeatures(event.point, { layers: ['stops-selected', 'stops-other'] })
+            if (map?.queryRenderedFeatures(event.point, { layers: ['stops-hit'] })
               .length) {
               return
             }
@@ -341,7 +386,7 @@ export function PriorityMap({
       fitFootprintRef.current = () => undefined
       mapRef.current = null
     }
-  }, [bbox.minLon, bbox.minLat, bbox.maxLon, bbox.maxLat, styleUrl])
+  }, [styleUrl, thermalBounds.maxLat, thermalBounds.maxLon, thermalBounds.minLat, thermalBounds.minLon])
 
   /* ------------------------------- cell data ----------------------------- */
   useEffect(() => {
@@ -433,7 +478,7 @@ export function PriorityMap({
       layerMode === 'anomaly' ? 'visible' : 'none',
     )
     // In combined mode the field recedes so the quadrant marks lead.
-    map.setPaintProperty('cells-temperature', 'fill-opacity', layerMode === 'combined' ? 0.44 : 0.84)
+    map.setPaintProperty('cells-temperature', 'fill-opacity', layerMode === 'combined' ? 0.52 : 0.96)
 
     map.setPaintProperty(
       'stops-selected',
@@ -463,17 +508,18 @@ export function PriorityMap({
       className="relative h-full w-full"
       data-testid="priority-map"
       data-cells-drawn={cellsDrawn ? 'true' : 'false'}
+      data-thermal-coverage={thermalCoverage.toFixed(3)}
     >
       <div ref={containerRef} className="h-full w-full" />
 
-      {status === 'ready' && (
+      {status === 'ready' && !compact && (
         <button
           type="button"
           data-testid="fit-thermal-footprint"
           onClick={() => fitFootprintRef.current()}
           className="absolute left-3 top-14 z-20 rounded-md border border-ink-200 bg-white/95 px-3 py-2 text-[11px] font-semibold text-ink-800 shadow-sm backdrop-blur-sm hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
         >
-          Fit thermal footprint
+          Show full measured footprint
         </button>
       )}
 
@@ -514,13 +560,15 @@ export function PriorityMap({
         </div>
       )}
 
-      <MapLegend
-        layerMode={layerMode}
-        temperatureDomain={temperatureDomain}
-        temperatureUnit={temperatureUnit}
-        valueFieldLabel={valueFieldLabel}
-        anomalyLabel={anomalyLabel}
-      />
+      {!compact ? (
+        <MapLegend
+          layerMode={layerMode}
+          temperatureDomain={temperatureDomain}
+          temperatureUnit={temperatureUnit}
+          valueFieldLabel={valueFieldLabel}
+          anomalyLabel={anomalyLabel}
+        />
+      ) : null}
     </div>
   )
 }
@@ -547,7 +595,10 @@ function MapLegend({
   anomalyLabel: string
 }) {
   return (
-    <div className="absolute bottom-6 right-3 z-20 w-60 rounded-lg border border-ink-200 bg-white/95 p-3 shadow-lg backdrop-blur-sm">
+    <div
+      data-testid="map-legend"
+      className="absolute bottom-3 left-24 right-3 z-20 w-auto rounded-lg border border-ink-200 bg-white/95 p-3 shadow-lg backdrop-blur-sm sm:bottom-6 sm:left-auto sm:w-60"
+    >
       {layerMode === 'anomaly' ? (
         <>
           <p className="hpe-label">{anomalyLabel}</p>

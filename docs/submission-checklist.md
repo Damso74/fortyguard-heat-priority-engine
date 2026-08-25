@@ -176,8 +176,7 @@ the remaining personal review and declarations.
 6. Optional final note.
 
 Recommended routing for FortyGuard: primary **Track 1 — Resilient Cities &
-Infrastructure**; secondary **Track 6 — Agentic AI** and **Track 7 — Data Analysis
-& Correlation**.
+Infrastructure**; secondary **Track 7 — Data Analysis & Correlation**.
 
 **Evidence recorded 2026-08-23:** the clean public submission repository was
 created on 2026-08-23, after the 2026-08-18 onboarding/kickoff. The retained

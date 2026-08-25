@@ -53,14 +53,14 @@ export function ModeBanner({ dataMode }: { dataMode: DataMode | null }) {
           {synthetic
             ? 'Demo — synthetic data'
             : cached
-              ? 'Cached real data'
+              ? 'Verified measurements'
               : 'Live path blocked'}
         </span>
         <p className="text-[12px] leading-snug">
           {synthetic
             ? 'No FortyGuard measurement produced any heat value on this screen — the thermal layer is a labelled synthetic fixture, and rankings demonstrate the method, not a finding about Phoenix.'
             : cached
-              ? 'Heat values come from a stored response to an earlier live FortyGuard request, not from a request made just now.'
+              ? 'Stored FortyGuard measurements from completed Phoenix activities.'
               : 'The live FortyGuard path has not been executed on this run.'}
         </p>
       </div>

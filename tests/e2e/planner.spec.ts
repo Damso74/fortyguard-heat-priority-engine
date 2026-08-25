@@ -35,12 +35,12 @@ test.describe('Heat Priority Engine — main journey', () => {
     page,
   }) => {
     await expect(page.getByRole('heading', { name: 'Priority planner' })).toBeVisible()
-    await expect(page.getByText(/inspect first before the next heat wave/)).toBeVisible()
+    await expect(page.getByText(/Choose the Phoenix stops to inspect before the next heat wave/)).toBeVisible()
 
     const banner = page.getByTestId('mode-banner')
     await expect(banner).toBeVisible()
-    await expect(banner).toContainText(/cached real data/i)
-    await expect(banner).toContainText('stored response to an earlier live FortyGuard request')
+    await expect(banner).toContainText(/verified measurements/i)
+    await expect(banner).toContainText('Stored FortyGuard measurements from completed Phoenix activities')
 
     // Nobody has clicked anything: the first paint is the product, and the
     // headline split leads the panel.
@@ -68,8 +68,9 @@ test.describe('Heat Priority Engine — main journey', () => {
     // The method cards summarise the moat and route to the full argument.
     await runAnalysis(page)
     const cards = page.getByTestId('method-cards')
+    await cards.getByText('Why these rankings?').click()
     await expect(cards).toContainText('Two axes, never blended')
-    await expect(cards).toContainText('assumption scenarios')
+    await expect(cards).toContainText('combinations')
     await expect(cards).toContainText('Every claim is auditable')
     await cards.getByRole('link', { name: 'Audit the full methodology' }).click()
     await expect(page.getByRole('heading', { name: 'Methodology' })).toBeVisible()
@@ -85,8 +86,39 @@ test.describe('Heat Priority Engine — main journey', () => {
     })
     const fitFootprint = page.getByTestId('fit-thermal-footprint')
     await expect(fitFootprint).toBeVisible()
+    await expect(fitFootprint).toHaveText('Show full measured footprint')
     await fitFootprint.click()
     await expect(page.getByTestId('priority-map')).toHaveAttribute('data-cells-drawn', 'true')
+
+    await expect
+      .poll(async () => Number(await page.getByTestId('priority-map').getAttribute('data-thermal-coverage')))
+      .toBeGreaterThan(0.8)
+  })
+
+  test('expands the desktop map without losing the plan', async ({ page }) => {
+    await runAnalysis(page)
+    const map = page.getByTestId('priority-map')
+    const canvas = map.locator('.maplibregl-canvas')
+    const toggle = page.getByTestId('toggle-analysis-panel')
+    const before = await map.boundingBox()
+    const canvasBefore = await canvas.boundingBox()
+
+    await expect(toggle).toHaveAccessibleName('Expand map')
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    await toggle.click()
+    await expect(toggle).toHaveAccessibleName('Open plan')
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    await expect(page.locator('aside[aria-label="Analysis panel"]')).toBeHidden()
+    await expect.poll(async () => (await map.boundingBox())?.width ?? 0).toBeGreaterThan(
+      (before?.width ?? 0) + 250,
+    )
+    await expect.poll(async () => (await canvas.boundingBox())?.width ?? 0).toBeGreaterThan(
+      (canvasBefore?.width ?? 0) + 250,
+    )
+
+    await toggle.click()
+    await expect(toggle).toHaveAccessibleName('Expand map')
+    await expect(page.locator('aside[aria-label="Analysis panel"]')).toBeVisible()
   })
 
   test('offers no weight control anywhere on the main path', async ({ page }) => {
@@ -122,20 +154,20 @@ test.describe('Heat Priority Engine — main journey', () => {
     await expect(page.getByText(/priority score/i)).toHaveCount(0)
   })
 
-  test('leads with the robust / assumption-dependent split, not the plan size', async ({ page }) => {
+  test('leads with the stable / variable split, not the plan size', async ({ page }) => {
     await runAnalysis(page)
 
     const headline = page.getByTestId('result-headline')
     await expect(headline).toBeVisible()
     await expect(headline).toContainText(
-      /\d+ robust (priority|priorities) \+ \d+ assumption-dependent (candidate|candidates)/,
+      /\d+ stable \+ \d+ change[s]? with assumptions/,
     )
 
     // Every selected row carries the two figures behind the split.
     const first = page.getByTestId('result-row').first()
-    await expect(first).toContainText(/\d+\/324 scenarios/)
+    await expect(first).toContainText(/\d+\/324 tests/)
     await expect(first).toContainText(/rank \d+(–\d+)?/)
-    await expect(first).toContainText(/robust|assumption-dependent/)
+    await expect(first).toContainText(/stable|variable/)
   })
 
   test('switches the map between exposure, anomaly and combined', async ({ page }) => {
@@ -449,7 +481,8 @@ test.describe('Heat Priority Engine — main journey', () => {
   })
 
   test('methodology page documents both metrics and the claim register', async ({ page }) => {
-    await page.getByRole('link', { name: 'Data & methodology', exact: true }).click()
+    await page.getByText('Explore data').click()
+    await page.getByRole('link', { name: 'Methods & limits', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'Methodology' })).toBeVisible()
     await expect(page.getByText('Metric A — Estimated scenario exposure load')).toBeVisible()
     await expect(page.getByText('Metric B — Local thermal anomaly')).toBeVisible()

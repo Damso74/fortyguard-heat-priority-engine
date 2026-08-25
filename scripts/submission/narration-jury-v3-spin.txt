@@ -1,0 +1,21 @@
+Phoenix has four thousand two hundred eighty-eight active transit stops. When extreme heat arrives, a small field team cannot inspect them all.
+
+A heat map can show where it is hot. It does not answer the operational question: where should we send people first, and can we defend that choice?
+
+Without a repeatable process, scarce capacity can go to priorities that change with assumptions. Field observations remain disconnected, and leaders receive a recommendation instead of an audit trail.
+
+That is why I built Heat Priority Engine. It turns FortyGuard temperature intelligence into a reviewable field decision.
+
+This Downtown pilot begins with real evidence: four hundred fifty stored temperature cells from three completed FortyGuard activities, captured at eight a.m., two p.m., and eight p.m. across twenty-seven stops. The monitor preserves the footprint, source time, units, and evidence digest. When an evening anomaly does not persist, the product refuses to call it a hotspot. Trust starts with knowing what the data does not prove.
+
+The planner opens on the verified default instead of asking the operator to configure a model. At a field capacity of ten, three stops remain selected across all three hundred twenty-four scenarios. Seven depend on assumptions. One useful change, increasing team capacity, shows how the queue responds without hiding the original result.
+
+Then a ranked stop becomes a field mission tied to the source run. An inspector records shade, shelter, accessibility, confidence, and notes. The observation cannot silently rewrite the thermal ranking. A human reviewer must accept it before the plan advances to version two.
+
+The scenario lab compares the plan with simple alternatives on the same eligible stops. If a simple baseline performs better, the product says so.
+
+Finally, the audit report packages the decision, assumptions, review state, run identity, and evidence digest for leadership and downstream systems.
+
+Heat Priority Engine gives transit teams a practical answer to three questions: where should we look, why this place, and can we prove how the decision was made?
+
+The value is not more heat data. It is a defensible way to act on it.

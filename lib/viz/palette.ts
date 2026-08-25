@@ -53,16 +53,16 @@ export const QUADRANT_ORDER: Quadrant[] = [
 
 /* ----------------------------- temperature -------------------------------- */
 
-/** Single-hue sequential ramp, light → dark. */
+/** Saturated single-hue heat ramp, light → dark. */
 export const TEMPERATURE_RAMP = [
-  '#fdf0e6',
-  '#fbdcc4',
-  '#f8c49b',
-  '#f4a870',
-  '#ee8a48',
-  '#dd6b2c',
-  '#b8511c',
-  '#8f3c13',
+  '#fff1d2',
+  '#fedb9b',
+  '#fdba68',
+  '#f5943d',
+  '#e96b25',
+  '#cf4818',
+  '#a92f12',
+  '#781d12',
 ] as const
 
 /* ------------------------------- anomaly ---------------------------------- */

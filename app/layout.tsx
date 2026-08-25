@@ -14,11 +14,11 @@ export const metadata: Metadata = {
     template: '%s · Heat Priority Engine',
   },
   description:
-    'From heat evidence to field-ready decisions: prioritize, inspect, review and audit Phoenix transit heat operations using verified FortyGuard data.',
+    'Prioritize Phoenix bus stop inspections using measured heat and transit use.',
   openGraph: {
     title: 'Heat Priority Engine',
     description:
-      'From heat evidence to field-ready decisions. An independent Phoenix transit heat-operations pilot.',
+      'Know which Phoenix bus stops to inspect before the next heat wave.',
     siteName: 'Heat Priority Engine',
     type: 'website',
     images: [{ url: '/og.png', width: 1732, height: 910, alt: 'Heat Priority Engine — Phoenix Transit Heat Operations' }],
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Heat Priority Engine',
-    description: 'From heat evidence to field-ready decisions.',
+    description: 'Know which Phoenix bus stops to inspect before the next heat wave.',
     images: ['/og.png'],
   },
   robots: { index: false, follow: false },

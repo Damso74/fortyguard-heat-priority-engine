@@ -31,6 +31,7 @@ export interface InspectionMission {
   robust: boolean
   status: MissionStatus
   observation: DemoObservation | null
+  observationHistory?: DemoObservation[]
 }
 
 interface OperationsContextValue {
@@ -92,7 +93,9 @@ export function OperationsProvider({
   const refresh = useCallback(() => setRefreshToken((value) => value + 1), [])
 
   useEffect(() => {
-    if (pathname === '/methodology') return
+    // Methodology and the live ridership explorer do not consume a thermal run.
+    // Avoid spending a 1.3 MB plan response before those independent pages can render.
+    if (pathname === '/methodology' || pathname === '/ridership') return
     if (run && loadedRefreshToken.current === refreshToken) return
     const controller = new AbortController()
     loadedRefreshToken.current = refreshToken
@@ -187,10 +190,19 @@ export function OperationsProvider({
       setMissions((current) =>
         current.map((mission) => {
           if (mission.id !== missionId || !mission.observation) return mission
+          const reviewedObservation = { ...mission.observation, review }
+          if (review === 'reinspect') {
+            return {
+              ...mission,
+              status: 'assigned',
+              observation: null,
+              observationHistory: [...(mission.observationHistory ?? []), reviewedObservation],
+            }
+          }
           return {
             ...mission,
-            status: review === 'accepted' ? 'reviewed' : review === 'reinspect' ? 'assigned' : mission.status,
-            observation: { ...mission.observation, review },
+            status: review === 'accepted' ? 'reviewed' : 'submitted',
+            observation: reviewedObservation,
           }
         }),
       )

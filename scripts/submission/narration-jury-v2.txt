@@ -1,0 +1,15 @@
+When extreme heat hits Phoenix, a transit team does not need another heat map. It needs to know which stops to inspect first, with limited staff, and it needs to defend that choice.
+
+Heat Priority Engine turns FortyGuard temperature intelligence into that operational decision.
+
+This Downtown pilot uses four hundred fifty stored temperature cells from three completed FortyGuard activities, captured at eight a.m., two p.m., and eight p.m. across twenty-seven transit stops. The heat monitor shows the returned footprint and preserves the source time, units, and evidence digest. The evening anomaly does not persist, so the product refuses to call it a hotspot. It acts on what the evidence proves, and stops where it does not.
+
+The priority planner combines this thermal evidence with official transit demand and scheduled waiting. At a field capacity of ten, three stops remain selected across all three hundred twenty-four scenarios. Seven are conditional on assumptions. That gives a small inspection team a defensible place to start without hiding uncertainty behind a black-box score.
+
+Every priority becomes a field mission tied to the exact run that created it. An inspector records what the source datasets cannot know, including shade, shelter, accessibility, confidence, and field notes. The observation does not silently rewrite the thermal ranking. A human reviewer must accept the evidence before the operational plan advances to version two.
+
+The scenario lab then compares the governed plan with simple alternatives using the same eligible stops. If ridership alone, temperature alone, or scheduled waiting performs better, the product says so.
+
+Finally, the audit report packages the decision, assumptions, review state, run identity, and evidence digest for leadership and downstream systems.
+
+Heat Priority Engine is the operating layer between FortyGuard data and the next accountable field action: prioritize, inspect, review, and prove.

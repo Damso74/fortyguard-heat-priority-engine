@@ -19,9 +19,15 @@ function csvCell(value: unknown): string {
 }
 
 export function ReportsAudit() {
-  const { run, missions, planVersion } = useOperations()
+  const { run, loading, error, refresh, missions, planVersion } = useOperations()
   const accepted = missions.filter((mission) => mission.observation?.review === 'accepted')
   const pending = missions.filter((mission) => mission.observation?.review === 'pending')
+  const observations = missions.filter((mission) => mission.observation)
+  const fieldReview = pending.length > 0
+    ? { label: 'Pending', className: 'text-flag-700' }
+    : accepted.length > 0
+      ? { label: 'Reviewed', className: 'text-ok-700' }
+      : { label: 'Not started', className: 'text-ink-500' }
   const licensingBlocked =
     run?.manifest.claimsBlocked.includes('raw_layer_redistribution_permitted') ?? true
 
@@ -67,37 +73,34 @@ export function ReportsAudit() {
   return (
     <div className="space-y-5">
       <ModuleHeader
-        eyebrow="Govern & document"
+        eyebrow="Reviewed decision"
         title="Reports & audit"
-        description="Create a decision brief for leadership and a machine-readable evidence package tied to one exact run and operational revision."
-        actions={
-          <>
-            <button type="button" onClick={() => window.print()} className="rounded-md border border-ink-200 bg-white px-3 py-2 text-[12px] font-semibold text-ink-700">Print decision brief</button>
-            <button type="button" onClick={exportCsv} className="rounded-md border border-ink-200 bg-white px-3 py-2 text-[12px] font-semibold text-ink-700">Export missions CSV</button>
-            <button type="button" onClick={exportJson} disabled={!run} className="rounded-md bg-brand-600 px-3 py-2 text-[12px] font-semibold text-white disabled:opacity-50">Download evidence JSON</button>
-          </>
-        }
+        description="Print the decision, its review status and its limits."
+        actions={<button type="button" onClick={() => window.print()} disabled={!run} className="hpe-button-primary">Print or save PDF</button>}
       />
 
-      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
+      {loading && !run ? (
+        <section className="hpe-card p-8 text-center" aria-busy="true"><p className="text-base font-bold text-ink-900">Preparing the audit package</p><p className="mt-2 text-[13px] text-ink-600">Loading the exact run identity and decision evidence…</p></section>
+      ) : error && !run ? (
+        <section className="hpe-card p-8 text-center" role="alert"><p className="text-base font-bold text-stop-700">The audit package could not be prepared</p><p className="mt-2 text-[13px] text-ink-600">{error}</p><button type="button" onClick={refresh} className="hpe-button-primary mt-5">Try again</button></section>
+      ) : null}
+
+      <section className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px]" aria-busy={!run}>
         <article className="hpe-card overflow-hidden" aria-labelledby="decision-brief-title">
-          <div className="border-b border-ink-100 bg-[#0f2238] px-6 py-5 text-white">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-300">Decision brief · plan v{planVersion}</p><h2 id="decision-brief-title" className="mt-2 text-xl font-bold">Phoenix transit heat inspection priorities</h2></div>
-              <EvidencePill tone="real">Real FortyGuard pilot</EvidencePill>
-            </div>
+          <div className="border-b border-ink-100 bg-ink-900 px-6 py-5 text-white">
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-300">Decision brief · {planVersion > 1 ? `revision v${planVersion}` : 'initial decision'}</p><h2 id="decision-brief-title" className="mt-2 text-xl font-bold">Phoenix transit heat inspection priorities</h2>
           </div>
           <div className="space-y-5 p-6">
-            <section><p className="hpe-label">Decision</p><p className="mt-2 text-lg font-bold text-ink-900">Inspect {run?.plan.capacity ?? 10} selected transit stops before making an infrastructure claim.</p><p className="mt-2 text-[12px] leading-relaxed text-ink-600">The current plan contains {run?.plan.robustIds.length ?? 0} robust priorities and {run?.plan.assumptionDependentIds.length ?? 0} assumption-dependent candidates.</p></section>
-            <section className="grid gap-3 sm:grid-cols-4"><div className="rounded-lg bg-ink-50 p-3"><p className="text-[10px] text-ink-500">AOI</p><p className="mt-1 text-[12px] font-bold">Downtown Phoenix</p></div><div className="rounded-lg bg-ink-50 p-3"><p className="text-[10px] text-ink-500">Thermal cells</p><p className="hpe-num mt-1 text-[12px] font-bold">{run?.thermal.cellCount ?? '—'}</p></div><div className="rounded-lg bg-ink-50 p-3"><p className="text-[10px] text-ink-500">Snapshots</p><p className="hpe-num mt-1 text-[12px] font-bold">{run?.request.snapshotTimes.length ?? '—'}</p></div><div className="rounded-lg bg-ink-50 p-3"><p className="text-[10px] text-ink-500">Scenarios</p><p className="hpe-num mt-1 text-[12px] font-bold">{run?.plan.scenarioCount ?? '—'}</p></div></section>
-            <section><p className="hpe-label">Evidence readiness</p><div className="mt-3 flex flex-wrap gap-2"><EvidencePill tone="verified">{accepted.length} accepted field observations</EvidencePill><EvidencePill tone={pending.length ? 'warn' : 'neutral'}>{pending.length} awaiting review</EvidencePill><EvidencePill tone="blocked">No local hotspot claim</EvidencePill></div></section>
-            <section className="rounded-lg border border-flag-700/20 bg-flag-100/40 p-4"><p className="text-[12px] font-bold text-ink-900">What this brief does not claim</p><p className="mt-2 text-[11px] leading-relaxed text-ink-700">It does not claim an official endorsement, people protected, temperature reduction, construction feasibility, dollar savings or causal impact.</p></section>
+            <section><p className="hpe-label">Decision</p><p className="mt-2 text-lg font-bold text-ink-900">Prepare {run?.plan.capacity ?? 10} inspection candidates.</p><p className="mt-2 text-[12px] text-ink-600">{run?.plan.robustIds.length ?? 0} remain selected in every test · {run?.plan.assumptionDependentIds.length ?? 0} change with assumptions.</p></section>
+            <section className="grid gap-3 sm:grid-cols-3"><div className="rounded-lg bg-ink-50 p-3"><p className="text-[10px] text-ink-500">Area</p><p className="mt-1 text-[12px] font-bold">Downtown Phoenix</p></div><div className="rounded-lg bg-ink-50 p-3"><p className="text-[10px] text-ink-500">Measurements</p><p className="hpe-num mt-1 text-[12px] font-bold">{run?.thermal.cellCount ?? '—'}</p></div><div className="rounded-lg bg-ink-50 p-3"><p className="text-[10px] text-ink-500">Tested combinations</p><p className="hpe-num mt-1 text-[12px] font-bold">{run?.plan.scenarioCount ?? '—'}</p></div></section>
+            <section><p className="hpe-label">Review status</p><div className="mt-3 flex flex-wrap gap-2"><EvidencePill tone="verified">{accepted.length} accepted</EvidencePill><EvidencePill tone={pending.length ? 'warn' : 'neutral'}>{pending.length} awaiting review</EvidencePill>{observations.length === 0 ? <EvidencePill tone="neutral">No field evidence</EvidencePill> : null}</div></section>
+            <p className="border-t border-ink-100 pt-4 text-[11px] leading-5 text-ink-500">Prioritization only. No official endorsement, health impact, temperature reduction, feasibility or savings claim.</p>
           </div>
         </article>
 
         <aside className="space-y-4">
-          <article className="hpe-card p-4"><p className="hpe-label">Package readiness</p><div className="mt-3 space-y-3 text-[11px]"><div className="flex justify-between gap-3"><span className="text-ink-600">Thermal provenance</span><strong className="text-ok-700">Ready</strong></div><div className="flex justify-between gap-3"><span className="text-ink-600">Plan version</span><strong>v{planVersion}</strong></div><div className="flex justify-between gap-3"><span className="text-ink-600">Field review</span><strong className={pending.length ? 'text-flag-700' : 'text-ok-700'}>{pending.length ? 'Pending' : 'Clear'}</strong></div><div className="flex justify-between gap-3"><span className="text-ink-600">Submission licensing</span><strong className={licensingBlocked ? 'text-stop-700' : 'text-ok-700'}>{licensingBlocked ? 'Blocked' : 'Ready'}</strong></div></div></article>
-          <article className="hpe-card p-4"><p className="hpe-label">Audit identity</p><dl className="mt-3 space-y-2 text-[10px]"><div><dt className="text-ink-500">Run ID</dt><dd className="mt-1 break-all font-mono text-ink-900">{run?.runId ?? 'Loading…'}</dd></div><div><dt className="text-ink-500">Audit SHA-256</dt><dd className="mt-1 break-all font-mono text-ink-900">{run?.audit.sha256 ?? 'Loading…'}</dd></div></dl></article>
+          <article className="hpe-card p-4"><p className="hpe-label">Package status</p><div className="mt-3 space-y-3 text-[11px]"><div className="flex justify-between gap-3"><span className="text-ink-600">Measurements</span><strong className="text-ok-700">Verified</strong></div><div className="flex justify-between gap-3"><span className="text-ink-600">Field review</span><strong className={fieldReview.className}>{fieldReview.label}</strong></div><div className="flex justify-between gap-3"><span className="text-ink-600">Data licence check</span><strong className={licensingBlocked ? 'text-stop-700' : 'text-ok-700'}>{licensingBlocked ? 'Blocked' : 'Ready'}</strong></div></div><details className="mt-4 border-t border-ink-100 pt-3"><summary className="min-h-11 cursor-pointer py-2 font-semibold text-brand-700">Other export formats</summary><div className="mt-2 flex flex-wrap gap-2"><button type="button" onClick={exportCsv} disabled={!run} className="hpe-button-secondary">Missions CSV</button><button type="button" onClick={exportJson} disabled={!run} className="hpe-button-secondary">Evidence JSON</button></div></details></article>
+          <details className="hpe-card p-4"><summary className="min-h-11 cursor-pointer py-2 text-[11px] font-semibold text-brand-700">Audit identifiers</summary><dl className="mt-3 space-y-2 text-[10px]"><div><dt className="text-ink-500">Run ID</dt><dd className="mt-1 break-all font-mono text-ink-900">{run?.runId ?? 'Loading…'}</dd></div><div><dt className="text-ink-500">Audit SHA-256</dt><dd className="mt-1 break-all font-mono text-ink-900">{run?.audit.sha256 ?? 'Loading…'}</dd></div></dl></details>
           {licensingBlocked ? (
             <article className="hpe-card border-l-4 border-l-stop-700 p-4"><p className="text-[12px] font-bold text-stop-700">Submission blocker</p><p className="mt-2 text-[11px] leading-relaxed text-ink-600">Raw-layer redistribution permission remains unresolved. The evidence package reports the block rather than hiding it.</p><Link href="/methodology#provenance" className="mt-3 inline-flex text-[11px] font-semibold text-brand-700 underline underline-offset-4">Review provenance</Link></article>
           ) : (

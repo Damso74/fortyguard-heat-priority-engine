@@ -48,7 +48,7 @@ function captionUnits(text) {
 
   const outputUnits = []
   for (const sentence of sentences) {
-    outputUnits.push(...fitCue(sentence, 78))
+    outputUnits.push(...fitCue(sentence, 68))
   }
   return outputUnits
 }

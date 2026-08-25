@@ -1,7 +1,7 @@
 # Hackathon submission draft
 
-FortyGuard Hackathon ’26 · Resilient Cities & Infrastructure · Agentic AI ·
-Data Analysis & Correlation
+FortyGuard Hackathon ’26 · Resilient Cities & Infrastructure · Data Analysis &
+Correlation
 
 > **Draft. Not submitted.** No submission form has been filed. The official
 > collaborator `Hackathon-FG` (`hackathon@fortyguard.com`) has accepted read
@@ -193,7 +193,7 @@ must be supplied only at submission time and must never be committed.
 | Project title | Heat Priority Engine |
 | One-line pitch | FortyGuard turns hyperlocal heat, transit demand and scheduled waiting into a reviewable Phoenix inspection queue. |
 | Primary track | Track 1 — Resilient Cities & Infrastructure |
-| Secondary tracks | Track 6 — Agentic AI; Track 7 — Data Analysis & Correlation |
+| Secondary tracks | Track 7 — Data Analysis & Correlation |
 | Who this is for | Transit operators, municipal resilience teams and their delivery partners. It changes which stops they inspect first when field capacity is limited, while exposing when the available evidence cannot justify a stronger intervention claim. |
 | Where and when | Downtown Phoenix. FortyGuard temperature: 15 July 2024 at 08:00, 14:00 and 20:00 local analysis time; ridership: FY2024 Q4; scheduled service: July 2026. The temporal mismatch is disclosed and stress-tested, not hidden. |
 | FortyGuard API usage | Three completed FortyGuard Temperature API activities provide 450 `tcm` cells for `average_temperature` across three hours. The app verifies and stores those immutable responses, joins stops inside the returned footprint, validates anomaly persistence and then builds an auditable capacity-constrained inspection queue. |

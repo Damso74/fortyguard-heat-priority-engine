@@ -7,7 +7,9 @@
    --------------------------------------------------------------------------- */
 @theme {
   --color-ink-900: #0b1828;
+  --color-ink-800: #1e293b;
   --color-ink-700: #334155;
+  --color-ink-600: #435267;
   --color-ink-500: #526173;
   --color-ink-400: #768396;
   --color-ink-300: #a8b3c2;
@@ -18,6 +20,7 @@
   --color-brand-700: #0f4f9f;
   --color-brand-600: #1769e0;
   --color-brand-500: #2e7ce6;
+  --color-brand-300: #86b4f2;
   --color-brand-100: #dceafd;
   --color-brand-50: #eff6ff;
 
@@ -53,6 +56,14 @@
     font-feature-settings: 'tnum' 1, 'cv05' 1;
   }
 
+  button,
+  a,
+  select,
+  input,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   /* Never rely on colour alone, and never remove the focus ring. */
   :focus-visible {
     outline: 2px solid var(--color-brand-500);
@@ -67,15 +78,66 @@
 
 @layer components {
   .hpe-card {
-    @apply rounded-lg border border-ink-200 bg-white;
+    @apply rounded-xl border border-ink-200 bg-white;
+    box-shadow: 0 1px 2px rgb(11 24 40 / 0.04), 0 8px 24px rgb(11 24 40 / 0.035);
   }
 
   .hpe-label {
-    @apply text-[11px] font-semibold uppercase tracking-wider text-ink-500;
+    @apply text-[12px] font-semibold uppercase tracking-wider text-ink-500;
   }
 
   .hpe-num {
     font-variant-numeric: tabular-nums;
+  }
+
+  .hpe-meta {
+    @apply text-[12px] leading-4 text-ink-500;
+  }
+
+  .hpe-button {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-2 text-[13px]
+      font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .hpe-button-primary {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-600 px-4 py-2
+      text-[13px] font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed
+      disabled:opacity-50;
+  }
+
+  .hpe-button-secondary {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg border border-ink-200 bg-white
+      px-4 py-2 text-[13px] font-semibold text-ink-700 transition-colors hover:border-brand-500
+      hover:text-brand-700 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .hpe-button-danger {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg border border-stop-700/25
+      bg-stop-100 px-4 py-2 text-[13px] font-semibold text-stop-700 transition-colors
+      hover:border-stop-700/50 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .hpe-button-success {
+    @apply inline-flex min-h-11 items-center justify-center rounded-lg bg-ok-700 px-4 py-2
+      text-[13px] font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .hpe-doc-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 520px;
+  }
+
+  .hpe-table-region {
+    @apply overflow-x-auto rounded-lg border border-ink-100;
+  }
+
+  .hpe-table-region table {
+    min-width: 640px;
+  }
+
+  .hpe-table-region th,
+  .hpe-table-region td {
+    @apply px-3 py-2;
   }
 }
 
@@ -104,6 +166,16 @@
 
   body {
     background: #fff;
+  }
+
+  button,
+  .hpe-no-print {
+    display: none !important;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
   }
 
   .hpe-card {

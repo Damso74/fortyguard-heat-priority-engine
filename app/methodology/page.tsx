@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { CLAIMS, claimsByTier } from '@/lib/claims/registry'
 import { loadDatasetManifest, loadSourceProvenance, loadStopDataset } from '@/lib/data/stops'
 import { AREAS_OF_INTEREST } from '@/lib/geo/aoi'
@@ -14,16 +15,46 @@ import { DEFAULT_ANOMALY_PARAMETERS } from '@/lib/metrics/anomaly'
 import { DEFAULT_MIN_SEPARATION_METERS } from '@/lib/metrics/selection'
 import { ANALYSIS_TIMEZONE, EARLIEST_ANALYSIS_DATE, TIMEZONE_ASSUMPTION } from '@/lib/agent/request'
 import { Badge } from '@/components/evidence/Badge'
+import { EvidencePill, ModuleHeader } from '@/components/operations/ModuleHeader'
 
 export const dynamic = 'force-static'
 
-export const metadata = { title: 'Methodology — Heat Priority Engine' }
+export const metadata = { title: 'Methodology', description: 'Review Heat Priority Engine metrics, assumptions, claims and source provenance.' }
+
+const METHODOLOGY_NAV = [
+  { label: 'Position', href: '#thesis' },
+  { label: 'Metric A · Exposure load', href: '#exposure' },
+  { label: 'Scenario envelope', href: '#envelope' },
+  { label: 'Metric B · Thermal anomaly', href: '#anomaly' },
+  { label: 'Selection method', href: '#selection' },
+  { label: 'FortyGuard contract', href: '#fortyguard' },
+  { label: 'Claim register', href: '#claims' },
+  { label: 'Data provenance', href: '#provenance' },
+  { label: 'Shelter limitation', href: '#shelter' },
+] as const
+
+function MethodologyNavigation() {
+  return (
+    <nav aria-label="Methodology sections" className="space-y-1">
+      {METHODOLOGY_NAV.map((item, index) => (
+        <a
+          key={item.href}
+          href={item.href}
+          className="group flex min-h-10 items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-semibold text-ink-600 transition-colors hover:bg-brand-50 hover:text-brand-700"
+        >
+          <span className="hpe-num text-[11px] text-ink-400 group-hover:text-brand-500">{String(index + 1).padStart(2, '0')}</span>
+          <span>{item.label}</span>
+        </a>
+      ))}
+    </nav>
+  )
+}
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="hpe-card mt-4 p-5">
-      <h2 className="text-base font-semibold text-ink-900">{title}</h2>
-      <div className="mt-2 space-y-3 text-[13px] leading-relaxed text-ink-700">{children}</div>
+    <section id={id} aria-labelledby={`${id}-title`} className="hpe-card hpe-doc-section scroll-mt-6 p-5 sm:p-6">
+      <h2 id={`${id}-title`} className="text-xl font-bold tracking-tight text-ink-900">{title}</h2>
+      <div className="mt-4 space-y-4 text-[14px] leading-6 text-ink-700 [&_h3]:scroll-mt-6 [&_h3]:pt-4 [&_h3]:text-base [&_table]:text-[13px]">{children}</div>
     </section>
   )
 }
@@ -35,13 +66,46 @@ export default function MethodologyPage() {
   const centralPlan = planTiles(AREAS_OF_INTEREST[0]!, 9)
 
   return (
-    <div className="mx-auto max-w-4xl">
-      <h1 className="text-xl font-bold tracking-tight text-ink-900">Methodology</h1>
-      <p className="mt-1 max-w-2xl text-[13px] text-ink-700">
-        Two metrics, computed separately and never blended. Every assumption below is stated with
-        what would falsify it. If a number appears in the product and is not explained here, treat
-        that as a bug.
-      </p>
+    <div className="space-y-6">
+      <ModuleHeader
+        eyebrow="Govern & document"
+        title="Data & methodology"
+        description="Two metrics, computed separately and never blended. Every assumption states what would falsify it; an unexplained product number is treated as a bug."
+        actions={
+          <>
+            <EvidencePill tone="neutral">Static reference</EvidencePill>
+            <EvidencePill tone="verified">{CLAIMS.length} registered claims</EvidencePill>
+          </>
+        }
+      />
+
+      <section className="hpe-card overflow-hidden" aria-labelledby="executive-summary-title">
+        <div className="border-b border-ink-100 bg-ink-900 px-5 py-4 text-white sm:px-6">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-orange-200">60-second read</p>
+          <h2 id="executive-summary-title" className="mt-1 text-xl font-bold">Executive summary</h2>
+        </div>
+        <div className="grid gap-px bg-ink-100 sm:grid-cols-3">
+          <article className="bg-white p-5"><p className="hpe-label">Decision supported</p><p className="mt-2 text-[13px] font-bold text-ink-900">Prioritize field inspections, not infrastructure investment.</p><p className="mt-2 text-[12px] leading-5 text-ink-500">Ten candidates are ranked; only three survive every tested assumption.</p></article>
+          <article className="bg-white p-5"><p className="hpe-label">Evidence window</p><p className="mt-2 text-[13px] font-bold text-ink-900">Historical pilot · July 2024</p><p className="mt-2 text-[12px] leading-5 text-ink-500">Heat and ridership are from 2024; scheduled service is from July 2026.</p></article>
+          <article className="bg-white p-5"><p className="hpe-label">Hard boundary</p><p className="mt-2 text-[13px] font-bold text-ink-900">No persistent hotspot is claimed.</p><p className="mt-2 text-[12px] leading-5 text-ink-500">Exposure and anomaly stay separate, and unsupported claims remain blocked.</p></article>
+        </div>
+      </section>
+
+      <details className="hpe-card p-3 lg:hidden">
+        <summary className="min-h-11 cursor-pointer px-2 py-3 text-[13px] font-bold text-ink-900">On this page</summary>
+        <div className="border-t border-ink-100 pt-2"><MethodologyNavigation /></div>
+      </details>
+
+      <div className="grid min-w-0 gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start">
+        <aside className="hpe-card sticky top-6 hidden max-h-[calc(100dvh-3rem)] overflow-y-auto p-3 lg:block">
+          <p className="hpe-label px-3 pb-2 pt-1">On this page</p>
+          <MethodologyNavigation />
+          <div className="mt-3 border-t border-ink-100 p-3">
+            <Link href="/reports" className="inline-flex min-h-11 items-center text-[13px] font-semibold text-brand-700">Open audit report →</Link>
+          </div>
+        </aside>
+
+        <article className="min-w-0 space-y-6">
 
       <Section id="thesis" title="The position this product takes">
         <p className="text-ink-900">
@@ -137,7 +201,7 @@ export default function MethodologyPage() {
           nothing between form a single 160-minute gap, so the whole-gap form Σgap²/(2Σgap) returns{' '}
           <strong>80 minutes for every hour it touches</strong>:
         </p>
-        <div className="overflow-x-auto">
+        <div className="hpe-table-region" tabIndex={0} aria-label="Demand profile allocation table">
           <table className="w-full border-collapse text-[12px]">
             <thead>
               <tr className="border-b border-ink-200 text-left text-ink-500">
@@ -226,7 +290,7 @@ export default function MethodologyPage() {
           previously combined with the <em>weekday</em> timetable — an error of 30–40% in the wait
           term on exactly the days service is thinnest.
         </p>
-        <div className="overflow-x-auto">
+        <div className="hpe-table-region" tabIndex={0} aria-label="Day type assumptions table">
           <table className="w-full border-collapse text-[12px]">
             <thead>
               <tr className="border-b border-ink-200 text-left text-ink-500">
@@ -305,7 +369,7 @@ export default function MethodologyPage() {
         <h3 className="pt-2 text-sm font-semibold text-ink-900">
           Assumptions, and what would falsify each
         </h3>
-        <div className="overflow-x-auto">
+        <div className="hpe-table-region" tabIndex={0} aria-label="Exposure metric assumptions table">
           <table className="w-full border-collapse text-[12px]">
             <thead>
               <tr className="border-b border-ink-200 text-left text-ink-500">
@@ -387,7 +451,7 @@ export default function MethodologyPage() {
           <strong>not a confidence interval</strong>: nothing here is a sampling distribution, so
           calling the spread an uncertainty interval would misrepresent what it is.
         </p>
-        <div className="overflow-x-auto">
+        <div className="hpe-table-region" tabIndex={0} aria-label="Scenario envelope table">
           <table className="w-full border-collapse text-[12px]">
             <thead>
               <tr className="border-b border-ink-200 text-left text-ink-500">
@@ -601,7 +665,7 @@ export default function MethodologyPage() {
       </Section>
 
       <Section id="provenance" title="Data provenance">
-        <div className="overflow-x-auto">
+        <div className="hpe-table-region" tabIndex={0} aria-label="Data provenance table">
           <table className="w-full border-collapse text-[12px]">
             <thead>
               <tr className="border-b border-ink-200 text-left text-ink-500">
@@ -661,10 +725,12 @@ export default function MethodologyPage() {
         </p>
       </Section>
 
-      <footer className="mt-6 pb-8 text-[11px] text-ink-500">
+      <footer className="hpe-card p-4 text-[12px] leading-5 text-ink-500">
         Independent hackathon project. Not endorsed by, affiliated with, or verified by the City of
         Phoenix or Valley Metro.
       </footer>
+        </article>
+      </div>
     </div>
   )
 }

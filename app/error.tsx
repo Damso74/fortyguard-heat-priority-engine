@@ -1,11 +1,32 @@
 'use client'
 
-export default function ErrorPage({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
+import Link from 'next/link'
+import { useEffect } from 'react'
+import { SystemState } from '@/components/operations/SystemState'
+
+export default function ErrorPage({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string }
+  reset: () => void
+}) {
+  useEffect(() => {
+    if (error.digest) console.error('Route rendering error', { digest: error.digest })
+  }, [error.digest])
+
   return (
-    <section className="hpe-card mx-auto max-w-xl p-6 text-center" role="alert">
-      <p className="text-lg font-bold text-ink-900">This module could not be displayed.</p>
-      <p className="mt-2 text-[13px] text-ink-600">The verified pilot remains unchanged. Retry the view or return to Overview.</p>
-      <button type="button" onClick={reset} className="mt-4 rounded-md bg-brand-600 px-4 py-2 text-[12px] font-semibold text-white">Retry module</button>
-    </section>
+    <SystemState
+      code="Module unavailable"
+      title="This view could not be displayed"
+      description="The verified pilot and your session workspace remain unchanged. Retry this module or return to the operational overview."
+      alert
+      actions={
+        <>
+          <button type="button" onClick={reset} className="hpe-button-primary">Try again</button>
+          <Link href="/" className="hpe-button-secondary">Return to Overview</Link>
+        </>
+      }
+    />
   )
 }
