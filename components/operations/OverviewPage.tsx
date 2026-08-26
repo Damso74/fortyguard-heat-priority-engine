@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 import { useOperations } from '@/components/operations/OperationsProvider'
@@ -161,6 +162,107 @@ export function OverviewPage({ mapStyleUrl }: { mapStyleUrl: string }) {
               The other {run?.plan.assumptionDependentIds.length ?? 0} change with the tested assumptions.
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="overflow-hidden rounded-[24px] bg-ink-900 text-white shadow-[0_20px_60px_rgb(11_24_40_/_0.14)] ring-1 ring-ink-900/10" aria-labelledby="street-context-title">
+        <div className="relative isolate overflow-hidden border-b border-white/10">
+          <Image
+            src="/editorial/downtown-phoenix-aerial.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="-z-20 object-cover object-[center_44%] opacity-35"
+          />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900 via-ink-900/92 to-ink-900/60" />
+          <div className="grid gap-6 px-6 py-7 sm:px-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.68fr)] lg:items-end">
+            <div>
+              <div className="mb-5 inline-flex items-center gap-3 rounded-xl border border-white/15 bg-ink-900/45 px-3 py-2 shadow-lg backdrop-blur-sm">
+                <span className="text-xl font-black tracking-[-0.06em] text-white">PHX</span>
+                <span className="h-7 w-px bg-white/20" aria-hidden="true" />
+                <span className="text-[9px] font-bold uppercase leading-4 tracking-[0.14em] text-slate-300">Arizona<br />Independent pilot location</span>
+              </div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-heat-200">Street-level context</p>
+            <h2 id="street-context-title" className="mt-2 max-w-2xl text-[clamp(1.75rem,3vw,2.75rem)] font-bold leading-[1.02] tracking-[-0.04em]">
+              Heat decisions begin where people wait.
+            </h2>
+            </div>
+            <p className="max-w-xl text-[13px] leading-6 text-slate-200 lg:justify-self-end">
+              The pilot proposes where to inspect first. Only a field visit can confirm the shade, shelter, and accessibility people experience at a specific stop.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid min-h-[540px] gap-px bg-white/10 lg:grid-cols-[minmax(0,1.35fr)_minmax(340px,0.65fr)]">
+          <figure className="group relative min-h-[360px] overflow-hidden bg-ink-800 lg:min-h-[540px]">
+            <Image
+              src="/editorial/downtown-valley-metro.jpg"
+              alt="Valley Metro bus passing Central and Adams in Downtown Phoenix"
+              fill
+              loading="eager"
+              sizes="(max-width: 1024px) 100vw, 64vw"
+              className="object-cover object-[52%_center] transition-transform duration-700 motion-reduce:transition-none lg:group-hover:scale-[1.025]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/18 to-brand-700/8" />
+            <figcaption className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-heat-200">Downtown Phoenix</p>
+              <h3 className="mt-2 max-w-lg text-2xl font-bold tracking-[-0.025em] sm:text-3xl">A real transit system behind every point on the map.</h3>
+              <p className="mt-3 max-w-lg text-[13px] leading-5 text-slate-200">Measured heat becomes useful when it leads to a clear, defensible field decision.</p>
+            </figcaption>
+          </figure>
+
+          <div className="grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-1">
+            <figure className="group relative min-h-[300px] overflow-hidden bg-ink-800 lg:min-h-0">
+              <Image
+                src="/editorial/dash-stop-phoenix.jpg"
+                alt="DASH Government Loop bus stop sign under a clear Phoenix sky"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 36vw"
+                className="object-cover object-[54%_42%] transition-transform duration-700 motion-reduce:transition-none lg:group-hover:scale-[1.035]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/12 to-brand-700/5" />
+              <figcaption className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-heat-200">The stop</p>
+                <h3 className="mt-1 text-xl font-bold tracking-tight">A sign, a curb, a place to wait.</h3>
+              </figcaption>
+            </figure>
+
+            <figure className="group relative min-h-[300px] overflow-hidden bg-ink-800 lg:min-h-0">
+              <Image
+                src="/editorial/valley-metro-boarding.jpg"
+                alt="A passenger boarding a Valley Metro bus in the Phoenix metropolitan area"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 36vw"
+                className="object-cover object-[58%_48%] transition-transform duration-700 motion-reduce:transition-none lg:group-hover:scale-[1.035]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/20 to-heat-700/5" />
+              <figcaption className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-heat-200">The person</p>
+                <h3 className="mt-1 text-xl font-bold tracking-tight">Every priority represents a journey.</h3>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 border-t border-white/10 px-6 py-4 text-[10px] leading-4 text-slate-400 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
+          <p><span className="font-bold uppercase tracking-[0.12em] text-slate-300">Context photography</span> · Not evidence from the ranked stops</p>
+          <p>
+            Photos:{' '}
+            Tony Webster:{' '}
+            <a href="https://commons.wikimedia.org/wiki/File:Valley_Metro_Bus_-_Downtown_Phoenix,_Arizona_(49441796646).jpg" target="_blank" rel="noreferrer" className="underline decoration-white/35 underline-offset-4 hover:text-white">bus</a>
+            {' + '}
+            <a href="https://commons.wikimedia.org/wiki/File:Phoenix_Dash_Government_Loop_(Valley_Metro_Bus)_(49447930912).jpg" target="_blank" rel="noreferrer" className="underline decoration-white/35 underline-offset-4 hover:text-white">stop</a>
+            {' · '}
+            <a href="https://creativecommons.org/licenses/by/2.0/" target="_blank" rel="noreferrer" className="underline decoration-white/35 underline-offset-4 hover:text-white">CC BY 2.0</a>
+            {' · '}
+            <a href="https://commons.wikimedia.org/wiki/File:MetroBus6669.jpg" target="_blank" rel="noreferrer" className="underline decoration-white/35 underline-offset-4 hover:text-white">Benjamin Sweaney</a>
+            {' · '}
+            <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noreferrer" className="underline decoration-white/35 underline-offset-4 hover:text-white">CC0</a>
+            {' · '}
+            <a href="https://commons.wikimedia.org/wiki/File:Downtown_Phoenix_Aerial_Looking_Northeast.jpg" target="_blank" rel="noreferrer" className="underline decoration-white/35 underline-offset-4 hover:text-white">DPPed skyline</a>
+            {' · '}
+            <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noreferrer" className="underline decoration-white/35 underline-offset-4 hover:text-white">CC BY-SA 3.0</a>
+          </p>
         </div>
       </section>
 
