@@ -350,5 +350,5 @@ payloads themselves are not present in the public repository. Verification is
 network-independent. Full regeneration of the joined dataset requires explicitly
 fetching the two excluded source inputs first.
 
-Basemap tiles: © OpenStreetMap contributors, © CARTO — attributed in the map
+Basemap: OpenFreeMap © OpenMapTiles, data from OpenStreetMap — attributed in the map
 control and in `lib/geo/map-style.ts`.

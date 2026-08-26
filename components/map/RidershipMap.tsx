@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { BASEMAP_ATTRIBUTION, resolveMapStyle } from '@/lib/geo/map-style'
+import { resolveMapStyle } from '@/lib/geo/map-style'
 import type { RidershipStop } from '@/lib/ridership/source'
 
 type MapStatus = 'loading' | 'ready' | 'unavailable'
@@ -52,7 +52,7 @@ export function RidershipMap({
         map.addControl(
           new maplibre.AttributionControl({
             compact: true,
-            customAttribution: `${BASEMAP_ATTRIBUTION} · Ridership: Valley Metro`,
+            customAttribution: 'Ridership: Valley Metro',
           }),
         )
         map.addControl(new maplibre.NavigationControl({ showCompass: false }), 'top-right')
@@ -95,7 +95,7 @@ export function RidershipMap({
             layout: {
               'text-field': ['get', 'point_count_abbreviated'],
               'text-size': 11,
-              'text-font': ['Open Sans Semibold'],
+              'text-font': ['Noto Sans Bold'],
             },
             paint: { 'text-color': '#0b1828' },
           })

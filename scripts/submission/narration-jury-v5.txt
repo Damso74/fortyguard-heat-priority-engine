@@ -1,0 +1,15 @@
+Phoenix has 4,288 transit stops. In extreme heat, a small field team cannot inspect them all.
+
+A heat map tells you where it is hot. It does not tell you where to act first, or whether that choice will survive scrutiny.
+
+Heat Priority Engine does.
+
+It starts with 450 real FortyGuard temperature cells across 27 Downtown Phoenix stops. Time, units, footprint, and source stay visible. If the evidence cannot prove a persistent hotspot, the product says so.
+
+Then the planner stress-tests every candidate. At capacity ten, three stops stay selected across all 324 scenarios. Seven move when assumptions change. That is the difference between a shortlist and a defensible priority.
+
+One click turns a stop into a field mission. The inspector records shade, shelter, accessibility, and confidence. Nothing changes until a human reviewer accepts the evidence.
+
+The result is a new plan, plus an audit package that preserves the run, the assumptions, and the decision trail.
+
+Not another heat map. A defensible way to decide where the field team goes next.

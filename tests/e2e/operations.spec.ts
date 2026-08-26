@@ -34,6 +34,13 @@ test.describe('municipal operations workflow', () => {
   test('keeps historical context, temperature units and empty field review explicit', async ({ page }) => {
     await page.goto('/heat')
     await expect(page.getByText('Historical pilot · July 2024', { exact: true })).toBeVisible()
+    const heatMap = page.getByTestId('priority-map')
+    await expect(heatMap).toHaveAttribute('data-cells-drawn', 'true', { timeout: 30_000 })
+    await expect(heatMap).toHaveAttribute('data-fit-mode', 'cover')
+    await expect(heatMap).toHaveAttribute('data-thermal-opacity', '0.68')
+    await expect
+      .poll(async () => Number(await heatMap.getAttribute('data-thermal-viewport-fill')))
+      .toBeGreaterThanOrEqual(1)
     const temperatureSummary = page.locator('aside').filter({ hasText: 'measured cells' })
     await expect(temperatureSummary.getByText(/°C/).first()).toBeVisible()
     await expect(temperatureSummary.getByText(/°F/).first()).toBeVisible()

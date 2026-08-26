@@ -391,7 +391,7 @@ licensed ODC-BY), and on the **FortyGuard Temperature API**.
 
 Independent hackathon project. **Not endorsed by, affiliated with, or verified
 by** the City of Phoenix or Valley Metro. Basemap © OpenStreetMap contributors,
-© CARTO.
+OpenFreeMap © OpenMapTiles, with data from OpenStreetMap.
 
 No separate open-source licence is declared for the application code. Public
 repository access permits review but does not grant reuse rights by itself. The

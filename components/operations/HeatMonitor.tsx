@@ -175,7 +175,7 @@ export function HeatMonitor({ mapStyleUrl }: { mapStyleUrl: string }) {
             </div>
             <h1 className="mt-2 text-3xl font-bold tracking-[-0.04em] sm:text-4xl">Heat monitor</h1>
             <p className="mt-2 max-w-xl text-[13px] leading-5 text-slate-200 sm:text-[14px]">
-              Compare the full measured surface hour by hour. Darker cells are warmer; numbered stops are in the inspection plan.
+              Compare the measured surface hour by hour. Darker cells are warmer; numbered stops are in the inspection plan.
             </p>
           </div>
           <Link href="/planner" className="pointer-events-auto inline-flex min-h-11 w-fit items-center justify-center rounded-xl bg-brand-600 px-4 py-2 text-[13px] font-bold text-white shadow-xl transition-colors hover:bg-brand-700">

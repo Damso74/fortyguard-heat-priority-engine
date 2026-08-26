@@ -37,7 +37,7 @@ JavaScript.
 | `RUN_LIVE_FORTYGUARD` | `0`, always, in every Vercel environment | Read **only** by the local capture CLI. Setting it here enables nothing: no deployed code can submit |
 | `DATA_MODE` | `auto` | |
 | `PRODUCT_MODE` | `auto` | Let the gates decide |
-| `NEXT_PUBLIC_MAP_STYLE_URL` | *(empty)* | Empty uses the built-in key-free CARTO raster style |
+| `NEXT_PUBLIC_MAP_STYLE_URL` | *(empty)* | Empty uses the key-free OpenFreeMap Positron style |
 
 **Never** paste the key into a `NEXT_PUBLIC_*` variable. `lib/config/server-env.ts`
 throws if it is imported from client code, and `npm run scan:secrets` fails the

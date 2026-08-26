@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { BoundingBox, Quadrant } from '@/lib/types'
-import { BASEMAP_ATTRIBUTION, resolveMapStyle } from '@/lib/geo/map-style'
+import { resolveMapStyle } from '@/lib/geo/map-style'
 import {
   ANOMALY_RAMP,
   ANOMALY_STOPS,
@@ -99,6 +99,7 @@ export function PriorityMap({
   styleUrl?: string
   compact?: boolean
 }) {
+  const thermalFillOpacity = 0.68
   const containerRef = useRef<HTMLDivElement | null>(null)
   const mapRef = useRef<import('maplibre-gl').Map | null>(null)
   const fitFootprintRef = useRef<() => void>(() => undefined)
@@ -110,6 +111,8 @@ export function PriorityMap({
   // and asserted end to end, not assumed.
   const [cellsDrawn, setCellsDrawn] = useState(false)
   const [thermalCoverage, setThermalCoverage] = useState(0)
+  const [thermalViewportFill, setThermalViewportFill] = useState(0)
+  const [fitMode, setFitMode] = useState<'cover' | 'contain'>('cover')
   const [hovered, setHovered] = useState<Hovered | null>(null)
   const onSelectRef = useRef(onSelect)
   onSelectRef.current = onSelect
@@ -172,27 +175,60 @@ export function PriorityMap({
           attributionControl: false,
         })
 
-        const fitFootprint = () => {
+        const measureThermalCoverage = () => {
+          if (!map) return null
+          const northWest = map.project([thermalBounds.minLon, thermalBounds.maxLat])
+          const southEast = map.project([thermalBounds.maxLon, thermalBounds.minLat])
+          const canvas = map.getCanvas()
+          if (canvas.clientWidth <= 0 || canvas.clientHeight <= 0) return null
+          return {
+            widthRatio: Math.abs(southEast.x - northWest.x) / canvas.clientWidth,
+            heightRatio: Math.abs(southEast.y - northWest.y) / canvas.clientHeight,
+          }
+        }
+
+        const recordThermalCoverage = () => {
+          const coverage = measureThermalCoverage()
+          if (!coverage) return
+          setThermalCoverage(Math.max(coverage.widthRatio, coverage.heightRatio))
+          setThermalViewportFill(Math.min(coverage.widthRatio, coverage.heightRatio))
+        }
+
+        const fitFootprint = (mode: 'cover' | 'contain') => {
           if (!map) return
+          setFitMode(mode)
           map.resize()
           map.fitBounds(
             [
               [thermalBounds.minLon, thermalBounds.minLat],
               [thermalBounds.maxLon, thermalBounds.maxLat],
             ],
-            { padding: 12, duration: 0 },
+            { padding: mode === 'cover' ? 0 : 12, duration: 0 },
           )
           window.requestAnimationFrame(() => {
             if (cancelled || !map) return
-            const northWest = map.project([thermalBounds.minLon, thermalBounds.maxLat])
-            const southEast = map.project([thermalBounds.maxLon, thermalBounds.minLat])
-            const canvas = map.getCanvas()
-            const widthRatio = Math.abs(southEast.x - northWest.x) / canvas.clientWidth
-            const heightRatio = Math.abs(southEast.y - northWest.y) / canvas.clientHeight
-            setThermalCoverage(Math.max(widthRatio, heightRatio))
+            const coverage = measureThermalCoverage()
+            if (!coverage) return
+
+            // Both decision views open with measured heat across the whole
+            // visible map, so streets can be read through one continuous
+            // surface instead of around a narrow central strip. This crops the
+            // measured bounds; it never extrapolates heat beyond them. The
+            // planner button still restores the complete measured footprint.
+            if (mode === 'cover') {
+              const limitingRatio = Math.min(coverage.widthRatio, coverage.heightRatio)
+              if (limitingRatio > 0 && limitingRatio < 1.02) {
+                map.jumpTo({ zoom: map.getZoom() + Math.log2(1.02 / limitingRatio) })
+              }
+            }
+
+            window.requestAnimationFrame(() => {
+              if (cancelled) return
+              recordThermalCoverage()
+            })
           })
         }
-        fitFootprintRef.current = fitFootprint
+        fitFootprintRef.current = () => fitFootprint('contain')
 
         // The map can boot while its responsive grid column is still settling.
         // MapLibre preserves the zoom chosen for that temporary width when the
@@ -202,14 +238,14 @@ export function PriorityMap({
         let initialLayoutSettled = false
         resizeObserver = new ResizeObserver(() => {
           map?.resize()
-          if (!initialLayoutSettled) fitFootprint()
+          if (!initialLayoutSettled) fitFootprint('cover')
         })
         resizeObserver.observe(containerRef.current)
         layoutSettleTimer = window.setTimeout(() => {
           initialLayoutSettled = true
         }, 750)
         map.addControl(
-          new maplibre.AttributionControl({ compact: true, customAttribution: BASEMAP_ATTRIBUTION }),
+          new maplibre.AttributionControl({ compact: true }),
         )
         // Keep zoom away from the planner toolbar and panel-expansion action.
         // MapLibre stacks this cleanly above the scale control.
@@ -232,7 +268,7 @@ export function PriorityMap({
             source: 'cells',
             paint: {
               'fill-color': '#ffffff',
-              'fill-opacity': 0.96,
+              'fill-opacity': thermalFillOpacity,
               'fill-outline-color': 'rgba(118, 48, 13, 0.18)',
             },
           })
@@ -304,6 +340,7 @@ export function PriorityMap({
             filter: ['all', ['get', 'selected'], ['<=', ['get', 'rank'], 30]],
             layout: {
               'text-field': ['to-string', ['get', 'rank']],
+              'text-font': ['Noto Sans Bold'],
               'text-size': 10,
               'text-allow-overlap': true,
             },
@@ -362,7 +399,7 @@ export function PriorityMap({
           // A double animation frame waits for both React's commit and the
           // responsive grid calculation before choosing the camera zoom.
           initialFitFrame = window.requestAnimationFrame(() => {
-            initialFitFrame = window.requestAnimationFrame(fitFootprint)
+            initialFitFrame = window.requestAnimationFrame(() => fitFootprint('cover'))
           })
         })
       } catch (error) {
@@ -386,7 +423,7 @@ export function PriorityMap({
       fitFootprintRef.current = () => undefined
       mapRef.current = null
     }
-  }, [styleUrl, thermalBounds.maxLat, thermalBounds.maxLon, thermalBounds.minLat, thermalBounds.minLon])
+  }, [compact, styleUrl, thermalBounds.maxLat, thermalBounds.maxLon, thermalBounds.minLat, thermalBounds.minLon])
 
   /* ------------------------------- cell data ----------------------------- */
   useEffect(() => {
@@ -478,14 +515,18 @@ export function PriorityMap({
       layerMode === 'anomaly' ? 'visible' : 'none',
     )
     // In combined mode the field recedes so the quadrant marks lead.
-    map.setPaintProperty('cells-temperature', 'fill-opacity', layerMode === 'combined' ? 0.52 : 0.96)
+    map.setPaintProperty(
+      'cells-temperature',
+      'fill-opacity',
+      layerMode === 'combined' ? 0.52 : thermalFillOpacity,
+    )
 
     map.setPaintProperty(
       'stops-selected',
       'circle-color',
       layerMode === 'combined' ? (['get', 'quadrantColor'] as never) : '#10151c',
     )
-  }, [layerMode, status])
+  }, [layerMode, status, thermalFillOpacity])
 
   /* ------------------------------- selection ----------------------------- */
   const lastActive = useRef<string | null>(null)
@@ -509,6 +550,9 @@ export function PriorityMap({
       data-testid="priority-map"
       data-cells-drawn={cellsDrawn ? 'true' : 'false'}
       data-thermal-coverage={thermalCoverage.toFixed(3)}
+      data-thermal-viewport-fill={thermalViewportFill.toFixed(3)}
+      data-fit-mode={fitMode}
+      data-thermal-opacity={thermalFillOpacity.toFixed(2)}
     >
       <div ref={containerRef} className="h-full w-full" />
 

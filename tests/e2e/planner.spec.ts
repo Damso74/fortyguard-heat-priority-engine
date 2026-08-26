@@ -84,10 +84,16 @@ test.describe('Heat Priority Engine — main journey', () => {
     await expect(page.getByTestId('priority-map')).toHaveAttribute('data-cells-drawn', 'true', {
       timeout: 30_000,
     })
+    await expect(page.getByTestId('priority-map')).toHaveAttribute('data-fit-mode', 'cover')
+    await expect(page.getByTestId('priority-map')).toHaveAttribute('data-thermal-opacity', '0.68')
+    await expect
+      .poll(async () => Number(await page.getByTestId('priority-map').getAttribute('data-thermal-viewport-fill')))
+      .toBeGreaterThan(0.95)
     const fitFootprint = page.getByTestId('fit-thermal-footprint')
     await expect(fitFootprint).toBeVisible()
     await expect(fitFootprint).toHaveText('Show full measured footprint')
     await fitFootprint.click()
+    await expect(page.getByTestId('priority-map')).toHaveAttribute('data-fit-mode', 'contain')
     await expect(page.getByTestId('priority-map')).toHaveAttribute('data-cells-drawn', 'true')
 
     await expect

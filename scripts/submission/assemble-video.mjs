@@ -2,7 +2,9 @@ import { spawnSync } from 'node:child_process'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-const ffmpeg = resolve(process.cwd(), 'node_modules', 'ffmpeg-static', 'ffmpeg.exe')
+const ffmpeg = process.env.FFMPEG_PATH
+  ? resolve(process.env.FFMPEG_PATH)
+  : resolve(process.cwd(), 'node_modules', 'ffmpeg-static', 'ffmpeg.exe')
 const inputVideo = resolve(
   process.cwd(),
   'outputs',
