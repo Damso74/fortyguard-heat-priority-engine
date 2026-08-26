@@ -28,7 +28,7 @@ capacity 10. Do not improvise a hotspot, city-wide result or shelter claim.
   `npm start`; show the same committed snapshot and state clearly that the URL is
   local.
 
-The already uploaded final video is <https://youtu.be/GW-F8puuu5I>; browser
-inspection on 2026-08-24 measured 152.921 seconds and found the captions control.
+The submitted final video is <https://youtu.be/LPq0Tn6YX9w>; browser inspection
+on 2026-08-26 measured 1:25 and found the active captions control.
 The detailed narration and recording checklist remain in
 [`../demo-script.md`](../demo-script.md).

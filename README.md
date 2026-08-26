@@ -37,7 +37,7 @@ Live demo: **<https://heat-priority-engine.vercel.app>** — keyless and read-on
 It serves the committed real Downtown pilot snapshot and cannot spend a credit.
 
 Submission package: [`docs/submission/`](docs/submission/) · final demo video:
-<https://youtu.be/GW-F8puuu5I> (2:33, English captions).
+<https://youtu.be/LPq0Tn6YX9w> (1:25, English captions).
 
 No API key is needed, and the app cannot make one matter: nothing reachable from
 a page render can call FortyGuard at all.

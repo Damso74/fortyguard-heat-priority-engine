@@ -287,15 +287,15 @@ on the strength of a plan.
 
 | Requirement | Status |
 |---|---|
-| Public GitHub repository | **Done** — <https://github.com/Damso74/fortyguard-heat-priority-engine>. Recorded as public; re-confirm the remote and its visibility before submitting. |
-| Live website / demo link | **Done and re-verified 2026-08-24** — <https://heat-priority-engine.vercel.app>. Desktop and 412×915 browser checks passed; the production journey reached `Plan v2` with no console error. Re-confirm immediately before submission. |
-| Add the FortyGuard collaborator account | **Done.** `Hackathon-FG` (`hackathon@fortyguard.com`) has accepted access. GitHub's permissions API reports role `read` and no pending invitation as of 2026-08-24. |
-| Submitted before 30 Aug 2026 GST | **Not done.** The form is distributed via Slack. Deadline 30 August 2026, 23:59 GST = 19:59 UTC = 12:59 America/Phoenix. |
+| Public GitHub repository | **Done and re-confirmed 2026-08-26** — <https://github.com/Damso74/fortyguard-heat-priority-engine>; submitted runtime commit `e6240dbf`. |
+| Live website / demo link | **Done and re-verified 2026-08-26** — <https://heat-priority-engine.vercel.app>. All eight routes returned HTTP 200; production browser review found no console error. |
+| Add the FortyGuard collaborator account | **Done.** `Hackathon-FG` (`hackathon@fortyguard.com`) has accepted access. GitHub's permissions API reports role `read` and no pending invitation as of 2026-08-26. |
+| Submitted before 30 Aug 2026 GST | **Done.** Google Forms confirmed submission on 26 August 2026 at 18:51 Europe/Berlin, before the deadline. |
 | FortyGuard data central to the project | **Yes, demonstrated with real data.** The default pilot serves 450 cells from three completed activities across 27 Downtown stops; its thermal gate selects `EXPOSURE_ONLY`. See §7. |
 | US geography | Yes — Phoenix, Arizona |
 | Team ≤ 3 | Yes — solo registration confirmed 2026-07-29 |
-| **3-minute demo video** | **Replacement pending after the 2026-08-26 UI release.** The previous non-listed 2:32 candidate remains available at <https://youtu.be/GW-F8puuu5I> with active English captions, but it predates the current jury-focused interface. Re-record, review with sound and replace it before filing the form. See [`demo-script.md`](demo-script.md). |
-| README + brief summary | README written; the brief summary is [`submission-draft.md`](submission-draft.md), also not yet submitted anywhere. |
+| **3-minute demo video** | **Done.** The final 1:25 jury-focused video is non-listed at <https://youtu.be/LPq0Tn6YX9w>, with English captions and no copyright issue reported by YouTube. See [`demo-script.md`](demo-script.md). |
+| README + brief summary | README written; the submitted response is recorded in [`submission-draft.md`](submission-draft.md). |
 | **Raw-source redistribution rights** | **Resolved by clean replacement repository.** The original repository, whose PR ref retained the removed files, is private. This public repository starts at a verified clean root and contains neither raw extract nor the unneeded OpenAPI download. Pending permission requests also cover processed per-stop fields (§5, `data-provenance.md` §8). |
 | Form declaration: repository created after kickoff | **Supported by current repository metadata.** GitHub records the clean public submission repository creation on 2026-08-23, after the 2026-08-18 onboarding/kickoff. The retained 2026-08-03 organiser email separately permits pre-sprint building. The checkbox remains a personal attestation for the owner. |
 
@@ -330,6 +330,4 @@ The submission and demo script state that boundary explicitly.
 ---
 
 *Compiled 2026-08-04; live-data sections updated 2026-08-19; §6 consolidated
-2026-08-22. Re-verify §2 and §3 against the official page before submitting: the
-page has already been revised once, and nothing in this repository can detect a
-third revision.*
+2026-08-22 and final submission evidence recorded 2026-08-26.*

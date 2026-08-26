@@ -19,20 +19,20 @@ Status meanings:
 | Team size 1–3 | `CONFIRMÉ` | Official FAQ; project is registered as a solo entry. |
 | FortyGuard data is central | `CONFIRMÉ` | Three completed activities, 450 stored real cells and 27 covered Downtown stops; see [`findings-provenance.md`](findings-provenance.md). |
 | Other datasets respect licences | `CONFIRMÉ` | Raw extracts without redistribution terms are excluded from the complete public history; retained source rights and hashes are in [`data-provenance.md`](data-provenance.md). |
-| Public GitHub repository | `CONFIRMÉ` | <https://github.com/Damso74/fortyguard-heat-priority-engine>; clean public head `8fdeed80`, no inherited pull-request refs, CI run 32912448603 successful. |
+| Public GitHub repository | `CONFIRMÉ` | <https://github.com/Damso74/fortyguard-heat-priority-engine>; verified product head `e6240dbf`, no inherited pull-request refs. |
 | Repository created after kickoff | `CONFIRMÉ` | GitHub creation time `2026-08-23T17:41:51Z`; kickoff was 18 August. Pre-existing work remains disclosed in the README. |
 | FortyGuard collaborator | `CONFIRMÉ` | GitHub permissions API reports `Hackathon-FG` role `read`; no pending invitation on 2026-08-26. |
-| Live demo without login/install | `CONFIRMÉ` | <https://heat-priority-engine.vercel.app>; deployment `dpl_CCcbvpQSpdrAQEN44FcAcH19kR8p` is `READY`; desktop and 412×915 checks passed without console error or overflow. |
-| Working demo video, maximum 3 minutes | `À FAIRE` | The existing 2:32 candidate remains available, but predates the current jury-focused UI. Re-record and replace it before filing the form. |
-| Owner listens to and approves final narration | `À VÉRIFIER HUMAINEMENT` | The owner must approve voice, pronunciation and pacing end to end. |
+| Live demo without login/install | `CONFIRMÉ` | <https://heat-priority-engine.vercel.app>; deployment `dpl_BGtEM9GUGfUErhWj3WRArxMhA6ji` is `READY` from `e6240dbf`; all eight routes returned HTTP 200 and the production browser check found no console error. |
+| Working demo video, maximum 3 minutes | `CONFIRMÉ` | <https://youtu.be/LPq0Tn6YX9w>; 1:25, non-listed, English captions and no copyright issue reported by YouTube. |
+| Owner authorises final publication | `CONFIRMÉ` | Explicit `GO FINAL` instruction received on 26 August 2026. |
 | README and project summary | `CONFIRMÉ` | [`README.md`](../README.md) and [`submission/PROJECT_SUMMARY.md`](submission/PROJECT_SUMMARY.md). |
 | Architecture and evidence pack | `CONFIRMÉ` | [`submission/ARCHITECTURE.md`](submission/ARCHITECTURE.md) and [`submission/EVIDENCE.md`](submission/EVIDENCE.md). |
 | Required technologies and U.S. data | `CONFIRMÉ` | FortyGuard Temperature API data is central; Phoenix, Arizona is the real pilot geography. |
 | Judging alignment | `CONFIRMÉ` | Impact/relevance 40%, technical execution 35%, innovation 15%, communication 10%; evidence mapping is in [`submission/EVIDENCE.md`](submission/EVIDENCE.md). |
 | Code licence decision | `À VÉRIFIER HUMAINEMENT` | No separate open-source licence is declared. Public access permits review, not reuse; dataset licences are explicit. Official rules say the author retains ownership and grants FortyGuard a showcase licence. |
-| Registered email, API key and personal declarations | `À VÉRIFIER HUMAINEMENT` | Enter only in the official form. Never place the key in Git, chat or browser-visible code. |
-| Final Google Form submission | `À FAIRE` | [Official six-page form](https://docs.google.com/forms/d/e/1FAIpQLSdheKfejq4uAk5dNluoaH6yBAL9N78-E1H8c_8FSnSMZKGlqQ/viewform). Latest resubmission before the deadline replaces earlier entries. |
-| Submission confirmation recorded | `À FAIRE` | After sending, record the timestamp and submitted URLs in [`hackathon-compliance.md`](hackathon-compliance.md). |
+| Registered email, API key and personal declarations | `CONFIRMÉ` | Supplied directly in the official form under the owner's explicit `GO FINAL` authorisation; no secret was added to Git or application code. |
+| Final Google Form submission | `CONFIRMÉ` | [Official six-page form](https://docs.google.com/forms/d/e/1FAIpQLSdheKfejq4uAk5dNluoaH6yBAL9N78-E1H8c_8FSnSMZKGlqQ/viewform) confirmed “Your project is submitted” on 26 August 2026 at 18:51 Europe/Berlin. |
+| Submission confirmation recorded | `CONFIRMÉ` | Timestamp and final public URLs are recorded in [`hackathon-compliance.md`](hackathon-compliance.md) and [`submission/EVIDENCE.md`](submission/EVIDENCE.md). |
 
 No technical or publication requirement is currently `BLOQUÉ`.
 
@@ -40,7 +40,7 @@ No technical or publication requirement is currently `BLOQUÉ`.
 
 | Priority | Finding | Resolution |
 |---|---|---|
-| `P0` | Final form is not submitted. | Intentionally remains a human-only action because it requires a private API key and personal attestations. |
+| `P0` | Final form was not submitted. | Resolved under the owner's explicit `GO FINAL` authorisation; Google Forms confirmed receipt. |
 | `P1` | Repository documents still said the collaborator invitation was pending. | Corrected after GitHub confirmed accepted role `read` and no pending invite. |
 | `P1` | The requested consolidated submission package and status vocabulary were absent. | Added this checklist and the four files under [`submission/`](submission/). |
 | `P1` | README quick start used `npm install` although the lockfile and CI require reproducibility. | Replaced with `npm ci`; added direct submission and licence-status links. |

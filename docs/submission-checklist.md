@@ -25,8 +25,8 @@ list of things a person still has to do.
   overflow.
 - Production safety endpoint: `/api/fortyguard/status` returned HTTP 200 with
   `configured=false`, `liveEnabled=false`, `authHeaderName=api-key`.
-- Video: the [existing non-listed candidate](https://youtu.be/GW-F8puuu5I) is
-  under three minutes but predates this release; replacement is required.
+- Video: the [final non-listed jury video](https://youtu.be/LPq0Tn6YX9w) is
+  1:25, uses the current release and has active English captions.
 - Official sources re-read: [hackathon page](https://www.fortyguard.com/hackathon26)
   and [current submission form](https://docs.google.com/forms/d/e/1FAIpQLSdheKfejq4uAk5dNluoaH6yBAL9N78-E1H8c_8FSnSMZKGlqQ/viewform).
 
@@ -121,15 +121,13 @@ as due diligence for the processed fields and must be incorporated if received.
       resolved: `fortyguard-demo-jury-final.mp4`, 1440×810, 2:32.88, embedded
       English subtitles, -17.9 LUFS / -1.8 dBTP. Scenario Lab stays on K=10 and
       the report shows `Submission licensing: Ready`.
-- [ ] **Owner watches the entire candidate with sound.** Approve the cloned voice,
-      pronunciation and pacing or regenerate it; this judgement cannot be
-      automated.
-- [x] Upload completed on the owner's instruction after the licensing blocker
-      was resolved: <https://youtu.be/GW-F8puuu5I>, non-listed, 2:32, English
-      captions active and no copyright issue reported by YouTube.
-- [ ] Re-record the walkthrough against deployed commit `8fdeed80` using the v3
-      narrative and single useful planner change, then replace the existing
-      YouTube candidate before submitting.
+- [x] **Owner authorises the final publication.** Explicit `GO FINAL` received
+      on 2026-08-26 after the final video and submission scope were presented.
+- [x] Upload completed on the owner's instruction: <https://youtu.be/LPq0Tn6YX9w>,
+      non-listed, 1:25, English captions active and no copyright issue reported
+      by YouTube.
+- [x] Re-recorded against deployed commit `e6240dbf` with the concise jury
+      narrative and current full-map interface before submission.
 
 ## 4. Local — the text
 
@@ -154,12 +152,12 @@ as due diligence for the processed fields and must be incorporated if received.
       `Hackathon-FG`, associated with `hackathon@fortyguard.com`, accepted
       `read` access on the clean repository. The GitHub permissions API was
       re-checked on 2026-08-24 and reports role `read`, with no pending invite.
-- [ ] **File the submission form**, distributed via Slack. Confirm the fields
-      before writing the summary to fit them.
-- [ ] **Submit by the owner-set target, 26 August.** Official deadline remains
-      30 August at 23:59 GST; no late submissions.
+- [x] **File the submission form**, distributed via Slack. Google Forms displayed
+      “Your project is submitted” on 2026-08-26 at 18:51 Europe/Berlin.
+- [x] **Submit by the owner-set target, 26 August.** Official deadline remains
+      30 August at 23:59 GST; the confirmed submission is early.
 
-### Submission-form field map — re-verified 2026-08-24
+### Submission-form field map — submitted 2026-08-26
 
 The Google Form has six pages and states that the latest resubmission before the
 deadline replaces earlier entries. Item 0 is resolved; the owner may submit after
@@ -185,17 +183,16 @@ Infrastructure**; secondary **Track 7 — Data Analysis & Correlation**.
 **Evidence recorded 2026-08-23:** the clean public submission repository was
 created on 2026-08-23, after the 2026-08-18 onboarding/kickoff. The retained
 2026-08-03 organiser email also permits building before the sprint. The required
-form checkbox remains a personal attestation for the owner at submission time,
-not something an agent can click. Never write the FortyGuard API key into this
-repository; enter it only in the form at submission time.
+form checkbox was personally authorised by the owner's explicit `GO FINAL`
+instruction and accompanied by the timing disclosure in the optional note. The
+FortyGuard API key remains absent from the repository and application code.
 
 ## 6. After submitting
 
-- [ ] Record what was actually submitted, and when, in
+- [x] Record what was actually submitted, and when, in
       `hackathon-compliance.md` §6 — replacing the intent with the fact.
-- [ ] Leave [`post-submission-architecture.md`](post-submission-architecture.md)
-      unimplemented until the submission is filed. It is deliberately out of
-      scope before then.
+- [x] Leave [`post-submission-architecture.md`](post-submission-architecture.md)
+      unimplemented. It remains deliberately out of scope for this submission.
 
 ---
 

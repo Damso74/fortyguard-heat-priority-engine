@@ -1,16 +1,11 @@
 # Demo script — 3 minutes
 
-> **Status: the 2026-08-23 candidate remains available, but the jury-focused UI
-> deployed on 2026-08-26 requires a fresh recording before form submission.**
-> `outputs/submission-video/fortyguard-demo-jury-final.mp4` is an ignored local
-> artefact: H.264/AAC, 1440×810 (16:9), 2:32.88, with the owner's ElevenLabs
-> voice clone, guided cursor and embedded English subtitles. Audio measures
-> -17.9 LUFS integrated / -1.8 dBTP. Representative frames confirm the K=10
-> scenario comparison and `Submission licensing: Ready`. YouTube serves the
-> 2:32 video with active English captions and reports no copyright issue. Its
-> visible licensing-ready state matches the clean replacement repository:
-> <https://youtu.be/GW-F8puuu5I>. End-to-end listening approval remains a human
-> review item.
+> **Status: final jury-focused video published and submitted on 2026-08-26.**
+> `outputs/submission-video/fortyguard-demo-jury-v6-damien-final.mp4` is an
+> ignored local artefact: H.264/AAC, 1440×810 (16:9), 1:25.88, with the owner's
+> authorised ElevenLabs voice clone and embedded English subtitles. YouTube
+> serves the non-listed video with an English caption track and reported no
+> copyright issue: <https://youtu.be/LPq0Tn6YX9w>.
 > Tracking remains in
 > [`submission-checklist.md`](submission-checklist.md).
 

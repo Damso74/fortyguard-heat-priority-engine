@@ -1,15 +1,15 @@
-# Hackathon submission draft
+# Hackathon submission record
 
 FortyGuard Hackathon ’26 · Resilient Cities & Infrastructure · Data Analysis &
 Correlation
 
-> **Draft. Not submitted.** No submission form has been filed. The official
+> **Submitted 2026-08-26 at 18:51 Europe/Berlin.** The official Google Form
+> displayed the confirmation “Your project is submitted”. The official
 > collaborator `Hackathon-FG` (`hackathon@fortyguard.com`) has accepted read
-> access; GitHub reconfirmed role `read` with no pending invite on 2026-08-24.
-> The final demo video is uploaded non-listed at <https://youtu.be/GW-F8puuu5I>.
+> access; GitHub reconfirmed role `read` with no pending invite on 2026-08-26.
+> The final demo video is non-listed at <https://youtu.be/LPq0Tn6YX9w>.
 > Status per requirement:
-> [`hackathon-compliance.md` §6](hackathon-compliance.md). Actions still to take:
-> [`submission-checklist.md`](submission-checklist.md).
+> [`hackathon-compliance.md` §6](hackathon-compliance.md).
 >
 > **Licensing gate resolved by removal:** the two raw extracts without
 > redistribution terms are excluded from the tracked repository
@@ -172,18 +172,18 @@ regenerated verification report carries the current counts.
 - Repository: <https://github.com/Damso74/fortyguard-heat-priority-engine>
 - Demo: <https://heat-priority-engine.vercel.app>
 - Methodology: `/methodology` in the demo
-- Demo video: <https://youtu.be/GW-F8puuu5I> — 2:32, non-listed, active English
+- Demo video: <https://youtu.be/LPq0Tn6YX9w> — 1:25, non-listed, active English
   captions, owner's ElevenLabs voice clone, synchronized navigation and guided
   cursor. The source MP4 remains ignored locally.
 - What is real and what is fixture: [`findings-provenance.md`](findings-provenance.md)
 
-Both links are recorded as live; confirm each one in a browser on the day, from a
-logged-out session, before the form is filed.
+Both links were confirmed live in the browser on 2026-08-26 before the form was
+filed.
 
 ## Field-by-field form answers
 
-These answers match the Google Form re-verified on 2026-08-24. Bracketed values
-must be supplied only at submission time and must never be committed.
+These answers match the Google Form submitted on 2026-08-26. Bracketed private
+values were supplied only in the form and remain absent from Git.
 
 | Form field | Answer to use |
 |---|---|
@@ -202,7 +202,7 @@ must be supplied only at submission time and must never be committed.
 | Repository | https://github.com/Damso74/fortyguard-heat-priority-engine |
 | Collaborator confirmation | `Hackathon-FG has accepted read permission; GitHub role read verified 2026-08-24` |
 | Live demo | https://heat-priority-engine.vercel.app |
-| Demo video | https://youtu.be/GW-F8puuu5I |
+| Demo video | https://youtu.be/LPq0Tn6YX9w |
 | Optional note | The real pilot deliberately enters `EXPOSURE_ONLY` mode because its local anomaly fails held-out-hour persistence. Rather than manufacture a hotspot, the engine ranks estimated exposure alone and keeps unsupported claims blocked in the audit export. |
 
 ### Project description — form-sized version

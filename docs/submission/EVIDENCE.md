@@ -8,16 +8,16 @@ Last full local verification: **26 August 2026**. Production browser review:
 | Artefact | Evidence |
 |---|---|
 | Repository | <https://github.com/Damso74/fortyguard-heat-priority-engine> — public, default branch `main` |
-| Verified product commit | [`8fdeed80b27e58dd39f5c2eec3e478ec6d95bb27`](https://github.com/Damso74/fortyguard-heat-priority-engine/commit/8fdeed80b27e58dd39f5c2eec3e478ec6d95bb27) |
-| GitHub CI | [Run 32912448603](https://github.com/Damso74/fortyguard-heat-priority-engine/actions/runs/32912448603) — success on the verified product commit |
+| Verified product commit | [`e6240dbf134fb98d7a02df75e5ef62b1957add45`](https://github.com/Damso74/fortyguard-heat-priority-engine/commit/e6240dbf134fb98d7a02df75e5ef62b1957add45) |
+| Verification | `npm run verify` passed locally on the verified product commit: 382 Vitest tests and 44 Playwright tests, plus build, hashes, GTFS rebuild, secret scan and audit |
 | Production | <https://heat-priority-engine.vercel.app> |
-| Vercel deployment | `dpl_CCcbvpQSpdrAQEN44FcAcH19kR8p` — `READY`, production |
-| Demo video | <https://youtu.be/GW-F8puuu5I> — valid prior candidate; replacement against the current jury-focused UI is pending |
+| Vercel deployment | `dpl_BGtEM9GUGfUErhWj3WRArxMhA6ji` — `READY`, production, exact source commit `e6240dbf` |
+| Demo video | <https://youtu.be/LPq0Tn6YX9w> — non-listed final, 1:25, English captions, no copyright issue reported |
 | Official rules | <https://www.fortyguard.com/hackathon26> |
 | Submission form | <https://docs.google.com/forms/d/e/1FAIpQLSdheKfejq4uAk5dNluoaH6yBAL9N78-E1H8c_8FSnSMZKGlqQ/viewform> |
 
-The product commit above is the exact source state deployed and reviewed. A
-documentation-only evidence seal may follow it without changing the runtime.
+The product commit above is the exact source state deployed and reviewed. This
+documentation-only evidence seal follows it without changing the runtime.
 
 ## Technical verification
 
@@ -70,8 +70,5 @@ gate is `npm run verify`; its generated, current result is
 
 ## Remaining limitations
 
-- The video must be re-recorded against the current deployed UI, then approved
-  end to end by the owner; narration judgement is not automatable.
-- The Google Form has not been submitted.
 - The code has no separate open-source licence; dataset licences are explicit.
 - Production run/export continuity remains instance-local and fails closed.
