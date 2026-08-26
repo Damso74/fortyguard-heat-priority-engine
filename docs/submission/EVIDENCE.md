@@ -1,25 +1,23 @@
 # Final submission evidence
 
-Last full local verification: **24 August 2026**. Production browser review:
-**24 August 2026**.
+Last full local verification: **26 August 2026**. Production browser review:
+**26 August 2026**.
 
 ## Public artefacts
 
 | Artefact | Evidence |
 |---|---|
 | Repository | <https://github.com/Damso74/fortyguard-heat-priority-engine> — public, default branch `main` |
-| Verified product commit | [`fef54677179ed67646896a4d4effb77e95b25304`](https://github.com/Damso74/fortyguard-heat-priority-engine/commit/fef54677179ed67646896a4d4effb77e95b25304) |
-| GitHub CI | [Run 32656317089](https://github.com/Damso74/fortyguard-heat-priority-engine/actions/runs/32656317089) — success on the verified product commit |
+| Verified product commit | [`8fdeed80b27e58dd39f5c2eec3e478ec6d95bb27`](https://github.com/Damso74/fortyguard-heat-priority-engine/commit/8fdeed80b27e58dd39f5c2eec3e478ec6d95bb27) |
+| GitHub CI | [Run 32912448603](https://github.com/Damso74/fortyguard-heat-priority-engine/actions/runs/32912448603) — success on the verified product commit |
 | Production | <https://heat-priority-engine.vercel.app> |
-| Vercel deployment | `dpl_He6uG9MqptbDVhVwXQnX5iPsu3CG` — `READY`, production |
-| Demo video | <https://youtu.be/GW-F8puuu5I> — 152.921 seconds, captions available |
+| Vercel deployment | `dpl_CCcbvpQSpdrAQEN44FcAcH19kR8p` — `READY`, production |
+| Demo video | <https://youtu.be/GW-F8puuu5I> — valid prior candidate; replacement against the current jury-focused UI is pending |
 | Official rules | <https://www.fortyguard.com/hackathon26> |
 | Submission form | <https://docs.google.com/forms/d/e/1FAIpQLSdheKfejq4uAk5dNluoaH6yBAL9N78-E1H8c_8FSnSMZKGlqQ/viewform> |
 
-The submission-package changes after `fef5467` are documentation-only and are
-not required to redeploy the already verified product. The exact local seal
-commit is obtained with `git rev-parse HEAD` and is recorded in the handoff
-report before any push.
+The product commit above is the exact source state deployed and reviewed. A
+documentation-only evidence seal may follow it without changing the runtime.
 
 ## Technical verification
 
@@ -38,12 +36,13 @@ gate is `npm run verify`; its generated, current result is
 
 ## Production browser evidence
 
-- Desktop: meaningful content rendered, correct title/description/OG image, no
-  Next.js error overlay and no console warning/error.
+- Desktop: the historical pilot and `10 inspection candidates · 3 robust`
+  conclusion rendered with no console error or horizontal overflow.
 - Main journey: overview → heat → planner → mission → demo observation → human
   acceptance reached `Plan v2`.
-- Mobile: 412×915 viewport rendered the same thesis and actions with no
-  horizontal overflow or error overlay.
+- Mobile: 412×915 rendered the full-width planner map, the stronger Heat Monitor
+  overlay, dual °C/°F values and the honest empty-review state with no horizontal
+  overflow or error overlay.
 - Public status API: configured and live-spend flags remain off; the deployment
   reads the stored real pilot.
 
@@ -71,7 +70,8 @@ gate is `npm run verify`; its generated, current result is
 
 ## Remaining limitations
 
-- Human approval of the final narration is not automatable.
+- The video must be re-recorded against the current deployed UI, then approved
+  end to end by the owner; narration judgement is not automatable.
 - The Google Form has not been submitted.
 - The code has no separate open-source licence; dataset licences are explicit.
 - Production run/export continuity remains instance-local and fails closed.

@@ -4,6 +4,8 @@ Last rule review: **24 August 2026**. Internal target: **26 August 2026**.
 Official deadline: **30 August 2026, 23:59 GST (UTC+4)** = 19:59 UTC = 21:59
 Europe/Berlin. The official page says no late submissions.
 
+Release evidence updated: **26 August 2026**.
+
 Status meanings:
 
 - `CONFIRMÉ` — backed by a command, public response or retained artefact.
@@ -17,11 +19,11 @@ Status meanings:
 | Team size 1–3 | `CONFIRMÉ` | Official FAQ; project is registered as a solo entry. |
 | FortyGuard data is central | `CONFIRMÉ` | Three completed activities, 450 stored real cells and 27 covered Downtown stops; see [`findings-provenance.md`](findings-provenance.md). |
 | Other datasets respect licences | `CONFIRMÉ` | Raw extracts without redistribution terms are excluded from the complete public history; retained source rights and hashes are in [`data-provenance.md`](data-provenance.md). |
-| Public GitHub repository | `CONFIRMÉ` | <https://github.com/Damso74/fortyguard-heat-priority-engine>; public HTTP access and clean history verified 2026-08-24. |
+| Public GitHub repository | `CONFIRMÉ` | <https://github.com/Damso74/fortyguard-heat-priority-engine>; clean public head `8fdeed80`, no inherited pull-request refs, CI run 32912448603 successful. |
 | Repository created after kickoff | `CONFIRMÉ` | GitHub creation time `2026-08-23T17:41:51Z`; kickoff was 18 August. Pre-existing work remains disclosed in the README. |
-| FortyGuard collaborator | `CONFIRMÉ` | GitHub permissions API reports `Hackathon-FG` role `read`; no pending invitation on 2026-08-24. |
-| Live demo without login/install | `CONFIRMÉ` | <https://heat-priority-engine.vercel.app>; desktop and 412×915 browser checks passed, with no console error or error overlay. |
-| Working demo video, maximum 3 minutes | `CONFIRMÉ` | <https://youtu.be/GW-F8puuu5I>; 152.921 seconds, captions control present, video available. |
+| FortyGuard collaborator | `CONFIRMÉ` | GitHub permissions API reports `Hackathon-FG` role `read`; no pending invitation on 2026-08-26. |
+| Live demo without login/install | `CONFIRMÉ` | <https://heat-priority-engine.vercel.app>; deployment `dpl_CCcbvpQSpdrAQEN44FcAcH19kR8p` is `READY`; desktop and 412×915 checks passed without console error or overflow. |
+| Working demo video, maximum 3 minutes | `À FAIRE` | The existing 2:32 candidate remains available, but predates the current jury-focused UI. Re-record and replace it before filing the form. |
 | Owner listens to and approves final narration | `À VÉRIFIER HUMAINEMENT` | The owner must approve voice, pronunciation and pacing end to end. |
 | README and project summary | `CONFIRMÉ` | [`README.md`](../README.md) and [`submission/PROJECT_SUMMARY.md`](submission/PROJECT_SUMMARY.md). |
 | Architecture and evidence pack | `CONFIRMÉ` | [`submission/ARCHITECTURE.md`](submission/ARCHITECTURE.md) and [`submission/EVIDENCE.md`](submission/EVIDENCE.md). |
@@ -42,7 +44,7 @@ No technical or publication requirement is currently `BLOQUÉ`.
 | `P1` | Repository documents still said the collaborator invitation was pending. | Corrected after GitHub confirmed accepted role `read` and no pending invite. |
 | `P1` | The requested consolidated submission package and status vocabulary were absent. | Added this checklist and the four files under [`submission/`](submission/). |
 | `P1` | README quick start used `npm install` although the lockfile and CI require reproducibility. | Replaced with `npm ci`; added direct submission and licence-status links. |
-| `P2` | Cosmetic redesign, new features and dependency upgrades. | Deliberately not attempted. |
+| `P2` | Jury-facing readability and novice projection. | Focused UX refinements shipped and verified on 26 August without changing the deterministic decision engine. |
 
 The detailed operational checklist remains in
 [`submission-checklist.md`](submission-checklist.md).
